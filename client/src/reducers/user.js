@@ -1,11 +1,11 @@
 const user = (state = {}, action) => {
-	let data = action.data
 	switch (action.type) {
 		case 'SET_USER':
-			console.log("reducer reached!!");
+			console.log("reducer reached!!", action);
 			return {
-				...state,
-				username: action.username
+				// ...state,
+				name: action.name,
+				id: action.id
 			}
 
 		default:

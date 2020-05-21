@@ -1,6 +1,6 @@
 import React from "react"
-import { Button, Input, Row, Col, Divider } from "antd"
-// import axios from 'axios'
+import { Button, Input, Row, Col, message } from "antd"
+import axios from 'axios'
 
 import history from '../../history';
 import './login.scss';
@@ -17,13 +17,18 @@ class Login extends React.Component {
     const cred = { name: this.state.name, pass: this.state.pass }
     console.log(cred);
     this.props.setUser(cred.name);
-    history.push('/home');
-    // axios
-    //     .post('https://prism-organized-column.glitch.me/login/', cred)
-    //     .then((res) => this.props.setUser("viraj"))
-    //     .catch(err => {
-    //         console.error(err);
-    //     });
+    axios
+      .post('/login', cred)
+      .then((res) => {
+        console.log(res);
+        if(res.data.status === 200) {
+          this.props.setUser(cred.name, res.data.id);
+          history.push('/home');
+        }
+      })
+      .catch(err => {
+        console.error(err);
+      });
   }
   handleChange = e => {
     var name = e.target.id;
