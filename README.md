@@ -3,4 +3,5 @@
 
 This project is made with MERN (Mongo, Express, ReactJS, NodeJS) techstack.
 
-<img alt="MERN" width="200" style="text-align: center" src="https://codingthesmartway.com/wp-content/uploads/2019/01/mern_logo.png">
+<img alt="MERN" width="300" style="text-align: center" src="https://codingthesmartway.com/wp-content/uploads/2019/01/mern_logo.png"/>
+
