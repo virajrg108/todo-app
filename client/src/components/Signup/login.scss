@@ -1,0 +1,21 @@
+.login-wrapper {
+	height: 100vh;
+	.login {
+		text-align: center;
+		font-family: "Raleway", sans-serif;
+		.title {
+			font-size: 30px;
+			margin-bottom: 30px;
+		}
+		button {
+			width: 100%;
+		}
+		.login-btn {
+			margin-bottom: 10px;
+		}
+	}
+	.svg img {
+		height: 500px;
+		width: auto;
+	}
+}
