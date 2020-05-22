@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
-import { message, Layout, Menu, Icon, Button, Tabs, Avatar, Breadcrumb } from 'antd';
+import { message, Layout, Menu, Icon, Button, Avatar, Breadcrumb } from 'antd';
+import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import { UserOutlined } from '@ant-design/icons';
 import history from '../../history';
 import Tasks from './tasks.jsx';
+import 'react-tabs/style/react-tabs.css';
 import './home.scss';
 
 const { Header, Content, Footer } = Layout;
@@ -27,18 +29,18 @@ class Home extends Component {
 				</Header>
 				<Content className="site-layout" style={{ padding: '0 50px', marginTop: 64 }}>
 					<br />
-					<div className="card-container">
-						<Tabs type="card">
-							<TabPane className="tab-pane" tab="TASKS" key="1">
-								<Tasks />
-							</TabPane>
-							<TabPane className="tab-pane" tab="BOARD" key="2">
-								<p>Content of Tab Pane 2</p>
-								<p>Content of Tab Pane 2</p>
-								<p>Content of Tab Pane 2</p>
-							</TabPane>
-						</Tabs>
-					</div>
+					<Tabs>
+						<TabList>
+							<Tab>TASKS</Tab>
+							<Tab>BOARD</Tab>
+						</TabList>
+						<TabPanel>
+							<Tasks/>
+						</TabPanel>
+						<TabPanel>
+							<h2>Any content 2</h2>
+						</TabPanel>
+					</Tabs>
 				</Content>
 			</Layout>
 		);

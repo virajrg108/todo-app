@@ -1,0 +1,14 @@
+.tasks {
+	padding: 2rem;
+	// flex-grow: 1 !important;
+	// display: flex;
+	// flex-flow: column;
+	// height: 100%;
+	// height: 40vh;
+	.divider {
+		height: unset !important;
+	}
+	.filters {
+		height: 100%;
+	}
+}
