@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { message, Layout, Menu, Icon, Button, Avatar, Breadcrumb } from 'antd';
+import { message, Layout, Menu, Icon, Button, Avatar, Breadcrumb, DatePicker } from 'antd';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import { UserOutlined } from '@ant-design/icons';
 import history from '../../history';
@@ -13,6 +13,10 @@ const { TabPane } = Tabs;
 class Home extends Component {
 	constructor(props) {
 		super(props);
+		this.state= {
+			labels : ['work', 'personal', 'casual'],
+			status : ['new', 'inprogress', 'completed']
+		}
 		this.handleChange = this.handleChange.bind(this);
 	}
 	handleChange = (event) => {
@@ -35,7 +39,7 @@ class Home extends Component {
 							<Tab>BOARD</Tab>
 						</TabList>
 						<TabPanel>
-							<Tasks/>
+							<Tasks labels={this.state.labels} status={this.state.status} />
 						</TabPanel>
 						<TabPanel>
 							<h2>Any content 2</h2>

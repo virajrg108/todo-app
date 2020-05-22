@@ -17,18 +17,18 @@ class Login extends React.Component {
     const cred = { name: this.state.name, pass: this.state.pass }
     console.log(cred);
     this.props.setUser(cred.name);
-    axios
-      .post('/login', cred)
-      .then((res) => {
-        console.log(res);
-        if(res.data.status === 200) {
-          this.props.setUser(cred.name, res.data.id);
-          history.push('/home');
-        }
-      })
-      .catch(err => {
-        console.error(err);
-      });
+    history.push('/home');
+    // axios
+    //   .post('/login', cred)
+    //   .then((res) => {
+    //     console.log(res);
+    //     if(res.data.status === 200) {
+    //       this.props.setUser(cred.name, res.data.id);
+    //     }
+    //   })
+    //   .catch(err => {
+    //     console.error(err);
+    //   });
   }
   handleChange = e => {
     var name = e.target.id;
