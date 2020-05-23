@@ -1,5 +1,5 @@
 import React from 'react';
-import { Row, Col, Divider, Input, DatePicker, Select, Card, Tag } from 'antd';
+import { Row, Col, Divider, Input, DatePicker, Select, Button, Tag } from 'antd';
 import moment from 'moment';
 import { Scrollbars } from 'react-custom-scrollbars';
 import { SearchOutlined } from '@ant-design/icons';
@@ -49,11 +49,14 @@ class Tasks extends React.Component {
 			<Row className="tasks" >
 				<Col span={11} className="filters-wrapper">
 					<div className="filters">
-						<Input size="large" suffix={<SearchOutlined />} className="search-input" />
+						<Button type="primary">Add Todo</Button>
+						<br /><br />
+						<Input size="large" suffix={<SearchOutlined />} className="search-input" placeholder="Search Todo"/>
 						<br /><br />
 						<RangePicker onChange={this.dateChange} size="large" value={this.state.rangeDate} />
 						<br /><br />
 						<Select
+							size="large"
 							mode="multiple"
 							style={{ width: '100%' }}
 							placeholder="Please select label"
@@ -64,6 +67,7 @@ class Tasks extends React.Component {
 						</Select>
 						<br /><br />
 						<Select
+							size="large"
 							mode="multiple"
 							style={{ width: '100%' }}
 							placeholder="Please select status"
@@ -72,6 +76,8 @@ class Tasks extends React.Component {
 						>
 							{Status}
 						</Select>
+						<br /><br />
+						<Button type="primary">Add Label</Button>
 					</div>
 				</Col>
 				<Divider type="vertical" className="divider" />
