@@ -47,30 +47,32 @@ class Tasks extends React.Component {
 		const Todos = 'dsf';
 		return (
 			<Row className="tasks" >
-				<Col span={11} className="filters">
-					<Input className="search-input" size="large" suffix={<SearchOutlined />} />
-					<br /><br />
-					<RangePicker onChange={this.dateChange} size="large" value={this.state.rangeDate} />
-					<br /><br />
-					<Select
-						mode="multiple"
-						style={{ width: '100%' }}
-						placeholder="Please select label"
-						defaultValue={[]}
-						onChange={(value) => this.handleSelect('label', value)}
-					>
-						{Label}
-					</Select>
-					<br /><br />
-					<Select
-						mode="multiple"
-						style={{ width: '100%' }}
-						placeholder="Please select status"
-						defaultValue={[]}
-						onChange={(value) => this.handleSelect('status', value)}
-					>
-						{Status}
-					</Select>
+				<Col span={11} className="filters-wrapper">
+					<div className="filters">
+						<Input size="large" suffix={<SearchOutlined />} className="search-input" />
+						<br /><br />
+						<RangePicker onChange={this.dateChange} size="large" value={this.state.rangeDate} />
+						<br /><br />
+						<Select
+							mode="multiple"
+							style={{ width: '100%' }}
+							placeholder="Please select label"
+							defaultValue={[]}
+							onChange={(value) => this.handleSelect('label', value)}
+						>
+							{Label}
+						</Select>
+						<br /><br />
+						<Select
+							mode="multiple"
+							style={{ width: '100%' }}
+							placeholder="Please select status"
+							defaultValue={[]}
+							onChange={(value) => this.handleSelect('status', value)}
+						>
+							{Status}
+						</Select>
+					</div>
 				</Col>
 				<Divider type="vertical" className="divider" />
 				<Col span={12} className="todos">
@@ -84,12 +86,12 @@ class Tasks extends React.Component {
 							return <div className="card" style={todo.priority == 'high' ? { borderTop: '5px solid #cf1322' } : todo.priority == 'normal' ? { borderTop: '5px solid #006d75' } : { borderTop: '5px solid #5b8c00' }} title={todo.name}>
 								<div className="card-row">
 									<p className="card-title">{todo.name}</p>
-									<div className="card-badge"><Tag color={todo.priority=='high'?'red':todo.priority=='normal'?'blue':'green'}>{todo.priority}</Tag></div>
+									<div className="card-badge"><Tag color={todo.priority == 'high' ? 'red' : todo.priority == 'normal' ? 'blue' : 'green'}>{todo.priority}</Tag></div>
 								</div>
 								<div className="card-row">
 									<p className="card-desc">{todo.desc}</p>
 									<div className="card-badge">
-										{todo.label.map(function(l) {
+										{todo.label.map(function (l) {
 											return <Tag>{l}</Tag>
 										})}
 									</div>
