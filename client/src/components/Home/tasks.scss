@@ -48,14 +48,11 @@
 			.card-badge {
 				width: 30%;
 				padding: 0 !important;
-				div {
+				.ant-tag {
+					margin-left: 4px;
+					margin-bottom: 4px;
 					float: right;
-					background-color: #fff;
-					color: #999;
-					border: 1px solid #999;
-					width: fit-content;
 					padding: 0 5px !important;
-					border-radius: 2px;
 				}
 			}
 		}

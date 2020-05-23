@@ -1,5 +1,5 @@
 import React from 'react';
-import { Row, Col, Divider, Input, DatePicker, Select, Card, Badge } from 'antd';
+import { Row, Col, Divider, Input, DatePicker, Select, Card, Tag } from 'antd';
 import moment from 'moment';
 import { Scrollbars } from 'react-custom-scrollbars';
 import { SearchOutlined } from '@ant-design/icons';
@@ -46,7 +46,7 @@ class Tasks extends React.Component {
 		});
 		const Todos = 'dsf';
 		return (
-			<Row className="tasks">
+			<Row className="tasks" >
 				<Col span={11} className="filters">
 					<Input className="search-input" size="large" suffix={<SearchOutlined />} />
 					<br /><br />
@@ -84,13 +84,13 @@ class Tasks extends React.Component {
 							return <div className="card" style={todo.priority == 'high' ? { borderTop: '5px solid #cf1322' } : todo.priority == 'normal' ? { borderTop: '5px solid #006d75' } : { borderTop: '5px solid #5b8c00' }} title={todo.name}>
 								<div className="card-row">
 									<p className="card-title">{todo.name}</p>
-									<div className="card-badge"><div>{todo.priority}</div></div>
+									<div className="card-badge"><Tag color={todo.priority=='high'?'red':todo.priority=='normal'?'blue':'green'}>{todo.priority}</Tag></div>
 								</div>
 								<div className="card-row">
 									<p className="card-desc">{todo.desc}</p>
 									<div className="card-badge">
 										{todo.label.map(function(l) {
-											return <div>{l}</div>
+											return <Tag>{l}</Tag>
 										})}
 									</div>
 								</div>
