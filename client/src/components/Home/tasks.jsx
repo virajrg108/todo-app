@@ -20,6 +20,13 @@ class Tasks extends React.Component {
 			selectedStatus: []
 		}
 	}
+	handleFilter = (e, type) => {
+		if(type=='search')
+			this.setState({searchText:e.target.value})
+		else if(type=='date') {
+			
+		}
+	}
 	handleSelect = (type, value) => {
 		console.log(type, value);
 		if (type == 'label') {
@@ -51,7 +58,7 @@ class Tasks extends React.Component {
 					<div className="filters">
 						<Button type="primary">Add Todo</Button>
 						<br /><br />
-						<Input size="large" suffix={<SearchOutlined />} className="search-input" placeholder="Search Todo"/>
+						<Input size="large" suffix={<SearchOutlined />} name="searchTxt" value={this.state.searchTxt} onChange={(e)=>this.handleFilter(e, 'search')} className="search-input" placeholder="Search Todo"/>
 						<br /><br />
 						<RangePicker onChange={this.dateChange} size="large" value={this.state.rangeDate} />
 						<br /><br />
