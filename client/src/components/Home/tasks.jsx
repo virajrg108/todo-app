@@ -1,6 +1,7 @@
 import React from 'react';
-import { Row, Col, Divider, Input, DatePicker, Select } from 'antd';
+import { Row, Col, Divider, Input, DatePicker, Select, Card, Badge } from 'antd';
 import moment from 'moment';
+import { Scrollbars } from 'react-custom-scrollbars';
 import { SearchOutlined } from '@ant-design/icons';
 import './tasks.scss';
 
@@ -11,23 +12,22 @@ const { Option } = Select;
 class Tasks extends React.Component {
 	constructor(props) {
 		super(props);
-		var labelss = [];
-		for (let i = 0; i < this.props.labels.length; i++) {
-			labelss.push(<Option key={this.props.labels[i]}>{this.props.labels[i]}</Option>);
-		}
-		var statuss = [];
-		for (let i = 0; i < this.props.labels.length; i++) {
-			statuss.push(<Option key={this.props.status[i]}>{this.props.status[i]}</Option>);
-		}
+		console.log(props.todos);
 		this.state = {
 			rangeDate: [null, null],
 			searchText: '',
-			selectLabels: labelss,
-			selectStatus: statuss
+			selectedLabels: [],
+			selectedStatus: []
 		}
 	}
 	handleSelect = (type, value) => {
 		console.log(type, value);
+		if (type == 'label') {
+			this.setState({ selectedLabels: value });
+		}
+		else if (type == 'status') {
+			this.setState({ selectedStatus: value });
+		}
 	}
 	dateChange = (date, dateString) => {
 		if (dateString[0] == "") {
@@ -38,6 +38,13 @@ class Tasks extends React.Component {
 			this.setState({ rangeDate: [null, null] })
 	}
 	render() {
+		const Label = this.props.labels.map(function (l) {
+			return <Option key={l}>{l}</Option>
+		});
+		const Status = this.props.status.map(function (l) {
+			return <Option key={l}>{l}</Option>
+		});
+		const Todos = 'dsf';
 		return (
 			<Row className="tasks">
 				<Col span={11} className="filters">
@@ -50,9 +57,9 @@ class Tasks extends React.Component {
 						style={{ width: '100%' }}
 						placeholder="Please select label"
 						defaultValue={[]}
-						onChange={(value)=>this.handleSelect('label', value)}
+						onChange={(value) => this.handleSelect('label', value)}
 					>
-						{this.state.selectLabels}
+						{Label}
 					</Select>
 					<br /><br />
 					<Select
@@ -60,14 +67,36 @@ class Tasks extends React.Component {
 						style={{ width: '100%' }}
 						placeholder="Please select status"
 						defaultValue={[]}
-						onChange={(value)=>this.handleSelect('status', value)}
+						onChange={(value) => this.handleSelect('status', value)}
 					>
-						{this.state.selectStatus}
+						{Status}
 					</Select>
 				</Col>
 				<Divider type="vertical" className="divider" />
-				<Col span={12}>
-
+				<Col span={12} className="todos">
+					<Scrollbars
+						renderTrackHorizontal={props => <div {...props} className="track-horizontal" style={{ display: "none" }} />}
+						renderThumbHorizontal={props => <div {...props} className="thumb-horizontal" style={{ display: "none" }} />}
+						renderTrackVertical={props => <div {...props} className="track-vertical" style={{ display: "none" }} />}
+						renderThumbVertical={props => <div {...props} className="thumb-vertical" style={{ display: "none" }} />}
+					>
+						{this.props.todos.map(function (todo) {
+							return <div className="card" style={todo.priority == 'high' ? { borderTop: '5px solid #cf1322' } : todo.priority == 'normal' ? { borderTop: '5px solid #006d75' } : { borderTop: '5px solid #5b8c00' }} title={todo.name}>
+								<div className="card-row">
+									<p className="card-title">{todo.name}</p>
+									<div className="card-badge"><div>{todo.priority}</div></div>
+								</div>
+								<div className="card-row">
+									<p className="card-desc">{todo.desc}</p>
+									<div className="card-badge">
+										{todo.label.map(function(l) {
+											return <div>{l}</div>
+										})}
+									</div>
+								</div>
+							</div>
+						})}
+					</Scrollbars>
 				</Col>
 			</Row>
 		);

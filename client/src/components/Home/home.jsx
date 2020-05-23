@@ -6,6 +6,7 @@ import history from '../../history';
 import Tasks from './tasks.jsx';
 import 'react-tabs/style/react-tabs.css';
 import './home.scss';
+import todos from './todo';
 
 const { Header, Content, Footer } = Layout;
 const { TabPane } = Tabs;
@@ -39,7 +40,7 @@ class Home extends Component {
 							<Tab>BOARD</Tab>
 						</TabList>
 						<TabPanel>
-							<Tasks labels={this.state.labels} status={this.state.status} />
+							<Tasks labels={this.state.labels} status={this.state.status} todos={todos}/>
 						</TabPanel>
 						<TabPanel>
 							<h2>Any content 2</h2>
