@@ -15,67 +15,64 @@ class Tasks extends React.Component {
 		console.log(props.todos);
 		this.state = {
 			rangeDate: [null, null],
-			searchText: '',
+			searchTxt: '',
 			selectedLabels: [],
 			selectedStatus: [],
 			todos: this.props.todos
 		};
-		// this.handleFilter = this.handleFilter.bind(this);
-		// this.searchChange = this.searchChange.bind(this);
-		// this.filterDate = this.filterDate.bind(this);
-		// this.filterTxt = this.filterTxt.bind(this);
-
 	}
-	filterTxt  = (name) => {
-		if ( this.state.searchText != '') {
-			console.log(name.toLowerCase().includes(this.state.searchText.toLowerCase()), "hi");
-			return name.toLowerCase().includes(this.state.searchText.toLowerCase());
-		}
-		else 
-			return true;
+	searchFilter = (name) => {
+		if(this.state.searchTxt=='') return true;
+		return name.toLowerCase().includes(this.state.searchTxt.toLowerCase())
 	}
-	filterDate = (due) => {
-		if(this.state.rangeDate[0]!=null)
-			moment(due).isSameOrAfter(this.state.rangeDate[0].format('YYYY-MM-DD')) && moment(due).isSameOrBefore(this.state.rangeDate[1].format('YYYY-MM-DD'));
-		else
-			return true;
+	dateFilter = (due) => {
+		if(this.state.rangeDate[0]==null) return true;
+		return moment(due).isSameOrAfter(this.state.rangeDate[0].format('YYYY-MM-DD')) && moment(due).isSameOrBefore(this.state.rangeDate[1].format('YYYY-MM-DD'));
+	}
+	labelFilter = (labels) => {
+		if(this.state.selectedLabels.length==0)  return true;
+		return this.state.selectedLabels.some(r=> labels.includes(r));
+	}
+	statusFilter = (status) => {
+		if(this.state.selectedStatus.length==0)  return true;
+		return this.state.selectedStatus.includes(status);
 	}
 	handleFilter = () => {
-		var propData = this.props.todos;
-		var the = this;
-		var data = propData.filter(function(todo) {
-			return this.filterTxt(todo.name) && this.filterDate(todo.due);
-		});
-		console.log(data);
+		var txt = this.state.searchTxt;
+		console.log(true && true && true);
+		var data = this.props.todos.filter((todo) => {
+			return this.searchFilter(todo.name) && this.dateFilter(todo.due) && this.labelFilter(todo.label) && this.statusFilter(todo.status);
+		})
 		this.setState({todos: data});
 	}
 	handleSelect = (type, value) => {
-		console.log(type, value);
 		if (type == 'label') {
 			this.setState({ selectedLabels: value });
 		}
 		else if (type == 'status') {
 			this.setState({ selectedStatus: value });
 		}
+		setTimeout(() => {
+			console.log(this.state.selectedLabels);
+			this.handleFilter();
+		}, 100);
 	}
 	searchChange = e => {
 		var name = e.target.name;
 		this.setState({[name]:e.target.value});
-		setTimeout(() => {
+		setTimeout(()=> {
 			this.handleFilter();
 		}, 100);
 	}
 	dateChange = (date, dateString) => {
 		if (dateString[0] !== "") {
-			var date = moment(dateString[0], 'YYYY-MM-DD');
 			this.setState({ rangeDate: [moment(dateString[0], 'YYYY-MM-DD'), moment(dateString[1], 'YYYY-MM-DD')] });
-			// this.setState({rangeDate: dateString});
 		}
 		else {
 			this.setState({ rangeDate: [null, null] });
 		}
-		setTimeout(() => {
-			this.handleFilter('', 'date');
+		setTimeout(()=> {
+			this.handleFilter();
 		}, 100);
 	}
 	render() {
