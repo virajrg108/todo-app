@@ -22,19 +22,19 @@ class Tasks extends React.Component {
 		};
 	}
 	searchFilter = (name) => {
-		if(this.state.searchTxt=='') return true;
+		if (this.state.searchTxt == '') return true;
 		return name.toLowerCase().includes(this.state.searchTxt.toLowerCase())
 	}
 	dateFilter = (due) => {
-		if(this.state.rangeDate[0]==null) return true;
+		if (this.state.rangeDate[0] == null) return true;
 		return moment(due).isSameOrAfter(this.state.rangeDate[0].format('YYYY-MM-DD')) && moment(due).isSameOrBefore(this.state.rangeDate[1].format('YYYY-MM-DD'));
 	}
 	labelFilter = (labels) => {
-		if(this.state.selectedLabels.length==0)  return true;
-		return this.state.selectedLabels.some(r=> labels.includes(r));
+		if (this.state.selectedLabels.length == 0) return true;
+		return this.state.selectedLabels.some(r => labels.includes(r));
 	}
 	statusFilter = (status) => {
-		if(this.state.selectedStatus.length==0)  return true;
+		if (this.state.selectedStatus.length == 0) return true;
 		return this.state.selectedStatus.includes(status);
 	}
 	handleFilter = () => {
@@ -43,7 +43,7 @@ class Tasks extends React.Component {
 		var data = this.props.todos.filter((todo) => {
 			return this.searchFilter(todo.name) && this.dateFilter(todo.due) && this.labelFilter(todo.label) && this.statusFilter(todo.status);
 		})
-		this.setState({todos: data});
+		this.setState({ todos: data });
 	}
 	handleSelect = (type, value) => {
 		if (type == 'label') {
@@ -59,8 +59,8 @@ class Tasks extends React.Component {
 	}
 	searchChange = e => {
 		var name = e.target.name;
-		this.setState({[name]:e.target.value});
-		setTimeout(()=> {
+		this.setState({ [name]: e.target.value });
+		setTimeout(() => {
 			this.handleFilter();
 		}, 100);
 	}
@@ -71,7 +71,7 @@ class Tasks extends React.Component {
 		else {
 			this.setState({ rangeDate: [null, null] });
 		}
-		setTimeout(()=> {
+		setTimeout(() => {
 			this.handleFilter();
 		}, 100);
 	}
@@ -88,11 +88,12 @@ class Tasks extends React.Component {
 					<div className="filters">
 						<Button type="primary">Add Todo</Button>
 						<br /><br />
-						<Input size="large" suffix={<SearchOutlined />} name="searchTxt" value={this.state.searchTxt} onChange={(e)=>this.searchChange(e)} className="search-input" placeholder="Search Todo" />
+						<Input size="large" suffix={<SearchOutlined />} name="searchTxt" value={this.state.searchTxt} onChange={(e) => this.searchChange(e)} className="search-input" placeholder="Search Todo" />
 						<br /><br />
-						<RangePicker onChange={this.dateChange} size="large" value={this.state.rangeDate} />
+						<RangePicker className="filter-inputs" onChange={this.dateChange} size="large" value={this.state.rangeDate} />
 						<br /><br />
 						<Select
+							className="filter-inputs"
 							size="large"
 							mode="multiple"
 							style={{ width: '100%' }}
@@ -104,6 +105,7 @@ class Tasks extends React.Component {
 						</Select>
 						<br /><br />
 						<Select
+							className="filter-inputs"
 							size="large"
 							mode="multiple"
 							style={{ width: '100%' }}
