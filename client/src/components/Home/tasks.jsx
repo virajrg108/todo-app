@@ -17,13 +17,27 @@ class Tasks extends React.Component {
 			rangeDate: [null, null],
 			searchText: '',
 			selectedLabels: [],
-			selectedStatus: []
-		}
+			selectedStatus: [],
+			todos: this.props.todos
+		};
+		this.handleFilter = this.handleFilter.bind(this);
 	}
 	handleFilter = (e, type) => {
-		if(type=='search')
-			this.setState({searchText:e.target.value})
-		else if(type=='date') {
+		var search = '', date = [];
+		if (type == 'search') {
+			var search = e.target.value;
+			console.log(search, type);
+			this.setState({ searchText: search });
+			// if(search!=='') {
+			// 	var data = this.props.todos.filter(function(todo) {
+			// 		return todo.name.toLowerCase().includes(search.toLowerCase());
+			// 	});
+			// 	this.setState({todos: data});
+			// }
+			// else 
+			// 	this.setState({todos:this.props.todos});
+		}
+		else if (type == 'date') {
 			
 		}
 	}
@@ -37,12 +51,13 @@ class Tasks extends React.Component {
 		}
 	}
 	dateChange = (date, dateString) => {
-		if (dateString[0] == "") {
+		if (dateString[0] !== "") {
 			var date = moment(dateString[0], 'YYYY-MM-DD');
 			this.setState({ rangeDate: [moment(dateString[0], 'YYYY-MM-DD'), moment(dateString[1], 'YYYY-MM-DD')] });
 		}
 		else
 			this.setState({ rangeDate: [null, null] })
+			this.handleFilter('', 'date');
 	}
 	render() {
 		const Label = this.props.labels.map(function (l) {
@@ -51,14 +66,13 @@ class Tasks extends React.Component {
 		const Status = this.props.status.map(function (l) {
 			return <Option key={l}>{l}</Option>
 		});
-		const Todos = 'dsf';
 		return (
 			<Row className="tasks" >
 				<Col span={11} className="filters-wrapper">
 					<div className="filters">
 						<Button type="primary">Add Todo</Button>
 						<br /><br />
-						<Input size="large" suffix={<SearchOutlined />} name="searchTxt" value={this.state.searchTxt} onChange={(e)=>this.handleFilter(e, 'search')} className="search-input" placeholder="Search Todo"/>
+						<Input size="large" suffix={<SearchOutlined />} name="searchTxt" value={this.state.searchTxt} onChange={(e) => this.handleFilter(e, 'search')} className="search-input" placeholder="Search Todo" />
 						<br /><br />
 						<RangePicker onChange={this.dateChange} size="large" value={this.state.rangeDate} />
 						<br /><br />
@@ -95,11 +109,14 @@ class Tasks extends React.Component {
 						renderTrackVertical={props => <div {...props} className="track-vertical" style={{ display: "none" }} />}
 						renderThumbVertical={props => <div {...props} className="thumb-vertical" style={{ display: "none" }} />}
 					>
-						{this.props.todos.map(function (todo) {
+						{this.state.todos.map(function (todo) {
 							return <div className="card" style={todo.priority == 'high' ? { borderTop: '5px solid #cf1322' } : todo.priority == 'normal' ? { borderTop: '5px solid #006d75' } : { borderTop: '5px solid #5b8c00' }} title={todo.name}>
 								<div className="card-row">
 									<p className="card-title">{todo.name}</p>
-									<div className="card-badge"><Tag color={todo.priority == 'high' ? 'red' : todo.priority == 'normal' ? 'blue' : 'green'}>{todo.priority}</Tag></div>
+									<div className="card-badge">
+										<Tag color={todo.priority == 'high' ? 'red' : todo.priority == 'normal' ? 'blue' : 'green'}>{todo.priority}</Tag>
+										<Tag>{todo.status}</Tag>
+									</div>
 								</div>
 								<div className="card-row">
 									<p className="card-desc">{todo.desc}</p>
@@ -109,6 +126,7 @@ class Tasks extends React.Component {
 										})}
 									</div>
 								</div>
+								<div style={{textAlign:'left'}}>{todo.due}</div>
 							</div>
 						})}
 					</Scrollbars>
