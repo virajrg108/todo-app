@@ -4,11 +4,11 @@ import moment from 'moment';
 import { Scrollbars } from 'react-custom-scrollbars';
 import { SearchOutlined } from '@ant-design/icons';
 import AddTodoModal from './addTodoModal';
+import AddLabel from './addLabel';
 import './tasks.scss';
 
 const { RangePicker } = DatePicker;
 const { Option } = Select;
-
 
 class Tasks extends React.Component {
 	constructor(props) {
@@ -24,6 +24,9 @@ class Tasks extends React.Component {
 	}
 	handleAddTodo = (todo) => {
 		this.props.handleAddTodo(todo);
+	}
+	handleAddLabel = (label) => {
+		this.props.handleAddLabel(label);
 	}
 	searchFilter = (name) => {
 		if (this.state.searchTxt == '') return true;
@@ -125,7 +128,7 @@ class Tasks extends React.Component {
 							{Status}
 						</Select>
 						<br /><br />
-						<Button type="primary">Add Label</Button>
+						<AddLabel handleAddLabel={this.handleAddLabel} />
 					</div>
 				</Col>
 				<Divider type="vertical" className="divider" />

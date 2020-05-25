@@ -30,6 +30,12 @@ class Home extends Component {
 			console.log(this.state.todos);
 		}, 1000);
 	}
+	handleAddLabel = (label) => {
+		this.setState({labels: [...this.state.labels, label]});
+		setTimeout(()=> {
+			console.log(this.state.labels);
+		}, 100);
+	}
 	render() {
 		return (
 			<Layout className="home">
@@ -51,7 +57,8 @@ class Home extends Component {
 								labels={this.state.labels} 
 								status={this.state.status} 
 								todos={this.state.todos} 
-								handleAddTodo={this.handleAddTodo} />
+								handleAddTodo={this.handleAddTodo}
+								handleAddLabel={this.handleAddLabel} />
 						</TabPanel>
 						<TabPanel>
 							<h2>Any content 2</h2>
