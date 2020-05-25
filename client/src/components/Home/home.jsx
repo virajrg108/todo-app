@@ -14,14 +14,21 @@ const { TabPane } = Tabs;
 class Home extends Component {
 	constructor(props) {
 		super(props);
-		this.state= {
-			labels : ['work', 'personal', 'casual'],
-			status : ['new', 'inprogress', 'completed']
+		this.state = {
+			labels: ['work', 'personal', 'casual'],
+			status: ['new', 'inprogress', 'completed'],
+			todos: todos
 		}
-		this.handleChange = this.handleChange.bind(this);
+		// this.handleChange = this.handleChange.bind(this);
 	}
-	handleChange = (event) => {
-		history.push('/snippets');
+	// handleChange = (event) => {
+	// 	history.push('/snippets');
+	// }
+	handleAddTodo = (todo) => {
+		this.setState({ todos: [...this.state.todos, todo] });
+		setTimeout(()=> {
+			console.log(this.state.todos);
+		}, 1000);
 	}
 	render() {
 		return (
@@ -40,7 +47,11 @@ class Home extends Component {
 							<Tab>BOARD</Tab>
 						</TabList>
 						<TabPanel>
-							<Tasks labels={this.state.labels} status={this.state.status} todos={todos}/>
+							<Tasks
+								labels={this.state.labels} 
+								status={this.state.status} 
+								todos={this.state.todos} 
+								handleAddTodo={this.handleAddTodo} />
 						</TabPanel>
 						<TabPanel>
 							<h2>Any content 2</h2>

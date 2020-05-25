@@ -3,6 +3,7 @@ import { Row, Col, Divider, Input, DatePicker, Select, Button, Tag } from 'antd'
 import moment from 'moment';
 import { Scrollbars } from 'react-custom-scrollbars';
 import { SearchOutlined } from '@ant-design/icons';
+import AddTodoModal from './addTodoModal';
 import './tasks.scss';
 
 const { RangePicker } = DatePicker;
@@ -18,8 +19,11 @@ class Tasks extends React.Component {
 			searchTxt: '',
 			selectedLabels: [],
 			selectedStatus: [],
-			todos: this.props.todos
+			todos: this.props.todos,
 		};
+	}
+	handleAddTodo = (todo) => {
+		this.props.handleAddTodo(todo);
 	}
 	searchFilter = (name) => {
 		if (this.state.searchTxt == '') return true;
@@ -75,6 +79,11 @@ class Tasks extends React.Component {
 			this.handleFilter();
 		}, 100);
 	}
+	componentWillReceiveProps(nextProps) {
+		if(this.props!=nextProps) {
+			this.setState({ todos: nextProps.todos});
+		}
+	}
 	render() {
 		const Label = this.props.labels.map(function (l) {
 			return <Option key={l}>{l}</Option>
@@ -86,7 +95,7 @@ class Tasks extends React.Component {
 			<Row className="tasks" >
 				<Col span={11} className="filters-wrapper">
 					<div className="filters">
-						<Button type="primary">Add Todo</Button>
+						<AddTodoModal visible={this.state.AddTodoModalVisible} handleAddTodo={this.handleAddTodo} labels={this.props.labels}/>
 						<br /><br />
 						<Input size="large" suffix={<SearchOutlined />} name="searchTxt" value={this.state.searchTxt} onChange={(e) => this.searchChange(e)} className="search-input" placeholder="Search Todo" />
 						<br /><br />
@@ -144,7 +153,7 @@ class Tasks extends React.Component {
 										})}
 									</div>
 								</div>
-								<div style={{ textAlign: 'left' }}>{todo.due}</div>
+								<div style={{ textAlign: 'left' }}>Due: {todo.due}</div>
 							</div>
 						})}
 					</Scrollbars>
