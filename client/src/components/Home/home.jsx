@@ -19,11 +19,7 @@ class Home extends Component {
 			status: ['new', 'inprogress', 'completed'],
 			todos: todos
 		}
-		// this.handleChange = this.handleChange.bind(this);
 	}
-	// handleChange = (event) => {
-	// 	history.push('/snippets');
-	// }
 	handleAddTodo = (todo) => {
 		this.setState({ todos: [...this.state.todos, todo] });
 		setTimeout(()=> {
