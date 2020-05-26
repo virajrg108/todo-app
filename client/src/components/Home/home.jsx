@@ -4,6 +4,7 @@ import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import { UserOutlined } from '@ant-design/icons';
 import history from '../../history';
 import Tasks from './tasks.jsx';
+import Board from './board';
 import 'react-tabs/style/react-tabs.css';
 import './home.scss';
 import todos from './todo';
@@ -68,7 +69,7 @@ class Home extends Component {
 								handleAddLabel={this.handleAddLabel} />
 						</TabPanel>
 						<TabPanel>
-							<h2>Any content 2</h2>
+							<Board />
 						</TabPanel>
 					</Tabs>
 				</Content>

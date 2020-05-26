@@ -1,0 +1,10 @@
+.board {
+  .parent {
+    border: 1px solid #333;
+    padding: 3rem;
+    .child {
+      cursor: grabbing;
+      border: 1px dashed #f0f;
+    }
+  }
+}
