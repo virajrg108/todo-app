@@ -31,7 +31,7 @@ class Tasks extends React.Component {
 	handleDate = (date, dateString) => {
     this.setState({ date: dateString });
   }
-  handleSelect = (value, type) => {
+  handleEditSelect = (value, type) => {
     this.setState({ [type]: value });
   }
 	showEditModal = (todo) => {
@@ -169,7 +169,7 @@ class Tasks extends React.Component {
 						<Input.TextArea name="modalDesc" onChange={this.handleChange} value={this.state.modalDesc} placeholder="Description" /><br /><br />
 						<div style={{ display: 'flex', justifyContent: 'space-between' }}>
 							<DatePicker name="modalDate" style={{ width: '45%' }} value={moment(this.state.modalDue, 'YYYY-MM-DD')} onChange={this.handleDate} />
-							<Select style={{ width: '45%' }} value={this.state.modalStatus} onChange={(value) => this.handleSelect(value, 'modalStatus')} placeholder="Select Status">
+							<Select style={{ width: '45%' }} value={this.state.modalStatus} onChange={(value) => this.handleEditSelect(value, 'modalStatus')} placeholder="Select Status">
 								<Option value="new">New</Option>
 								<Option value="inprogress">In Progress</Option>
 								<Option value="completed">Completed</Option>
@@ -177,7 +177,7 @@ class Tasks extends React.Component {
 						</div>
 						<br />
 						<div style={{ display: 'flex', justifyContent: 'space-between' }}>
-							<Select style={{ width: '35%' }} value={this.state.modalPriority} onChange={(value) => this.handleSelect(value, 'modalPriority')} placeholder="Select Priority">
+							<Select style={{ width: '35%' }} value={this.state.modalPriority} onChange={(value) => this.handleEditSelect(value, 'modalPriority')} placeholder="Select Priority">
 								<Option value="high">High</Option>
 								<Option value="normal">Normal</Option>
 								<Option value="low">Low</Option>
