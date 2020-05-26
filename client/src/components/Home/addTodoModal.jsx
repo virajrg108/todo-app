@@ -22,7 +22,6 @@ class AddTodoModal extends React.Component {
   };
   handleDate = (date, dateString) => {
     this.setState({ date: dateString });
-    
   }
   handleSelect = (value, type) => {
     this.setState({ [type]: value });
@@ -53,7 +52,7 @@ class AddTodoModal extends React.Component {
           </div>
           <br />
           <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-            <Select style={{ width: '35%' }} onChange={(value) => this.handleSelect(value, 'priority')}  placeholder="Select Status">
+            <Select style={{ width: '35%' }} onChange={(value) => this.handleSelect(value, 'priority')}  placeholder="Select Priority">
               <Option value="high">High</Option>
               <Option value="normal">Normal</Option>
               <Option value="low">Low</Option>

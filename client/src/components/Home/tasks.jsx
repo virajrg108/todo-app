@@ -1,5 +1,5 @@
 import React from 'react';
-import { Row, Col, Divider, Input, DatePicker, Select, Button, Tag } from 'antd';
+import { Row, Col, Divider, Input, DatePicker, Select, Button, Tag, Modal } from 'antd';
 import moment from 'moment';
 import { Scrollbars } from 'react-custom-scrollbars';
 import { SearchOutlined } from '@ant-design/icons';
@@ -20,7 +20,33 @@ class Tasks extends React.Component {
 			selectedLabels: [],
 			selectedStatus: [],
 			todos: this.props.todos,
+			editModalVisible: false, modaTodoID:-1, modalName: '', modalDesc: '', modalDue: '', modalStatus: '', modalPriority: '', modalLabels: []
 		};
+		this.showEditModal = this.showEditModal.bind(this);
+	}
+	handleChange = e => {
+		var name = e.target.name;
+		this.setState({[name]: e.target.value});
+	}
+	handleDate = (date, dateString) => {
+    this.setState({ date: dateString });
+  }
+  handleSelect = (value, type) => {
+    this.setState({ [type]: value });
+  }
+	showEditModal = (todo) => {
+		console.log(todo);
+		this.setState({ editModalVisible: true, modalTodoId: todo.id, modalName: todo.name, modalDesc: todo.desc, modalDue: todo.due, modalStatus: todo.status, modalPriority: todo.priority, modalLabels: todo.label })
+	}
+	handleEditOk = () => {
+		this.setState({ editModalVisible: false });
+		this.props.handleEditTodo({id: this.state.modalTodoId, name: this.state.modalName, desc: this.state.modalDesc, due: this.state.modalDue, status: this.state.modalStatus, priority: this.state.modalPriority, label: this.state.modalLabels})
+	}
+	handleEditCancel = () => {
+		this.setState({ editModalVisible: false });
+	}
+	handleEditTodo = (todo) => {
+		this.props.handleEditTodo(todo);
 	}
 	handleAddTodo = (todo) => {
 		this.props.handleAddTodo(todo);
@@ -83,8 +109,8 @@ class Tasks extends React.Component {
 		}, 100);
 	}
 	componentWillReceiveProps(nextProps) {
-		if(this.props!=nextProps) {
-			this.setState({ todos: nextProps.todos});
+		if (this.props != nextProps) {
+			this.setState({ todos: nextProps.todos });
 		}
 	}
 	render() {
@@ -98,7 +124,7 @@ class Tasks extends React.Component {
 			<Row className="tasks" >
 				<Col span={11} className="filters-wrapper">
 					<div className="filters">
-						<AddTodoModal visible={this.state.AddTodoModalVisible} handleAddTodo={this.handleAddTodo} labels={this.props.labels}/>
+						<AddTodoModal visible={this.state.AddTodoModalVisible} handleAddTodo={this.handleAddTodo} labels={this.props.labels} />
 						<br /><br />
 						<Input size="large" suffix={<SearchOutlined />} name="searchTxt" value={this.state.searchTxt} onChange={(e) => this.searchChange(e)} className="search-input" placeholder="Search Todo" />
 						<br /><br />
@@ -133,33 +159,70 @@ class Tasks extends React.Component {
 				</Col>
 				<Divider type="vertical" className="divider" />
 				<Col span={12} className="todos">
-					<Scrollbars
-						renderTrackHorizontal={props => <div {...props} className="track-horizontal" style={{ display: "none" }} />}
-						renderThumbHorizontal={props => <div {...props} className="thumb-horizontal" style={{ display: "none" }} />}
-						renderTrackVertical={props => <div {...props} className="track-vertical" style={{ display: "none" }} />}
-						renderThumbVertical={props => <div {...props} className="thumb-vertical" style={{ display: "none" }} />}
+					<Modal
+						visible={this.state.editModalVisible}
+						title="Edit Todo"
+						onOk={this.handleEditOk}
+						onCancel={this.handleEditCancel}
 					>
-						{this.state.todos.map(function (todo) {
-							return <div key={todo.id} className="card" style={todo.priority == 'high' ? { borderTop: '5px solid #cf1322' } : todo.priority == 'normal' ? { borderTop: '5px solid #006d75' } : { borderTop: '5px solid #5b8c00' }} title={todo.name}>
-								<div className="card-row">
-									<p className="card-title">{todo.name}</p>
-									<div className="card-badge">
-										<Tag color={todo.priority == 'high' ? 'red' : todo.priority == 'normal' ? 'blue' : 'green'}>{todo.priority}</Tag>
-										<Tag>{todo.status}</Tag>
+						<Input name="modalName" onChange={this.handleChange} value={this.state.modalName} placeholder="Name" /><br /><br />
+						<Input.TextArea name="modalDesc" onChange={this.handleChange} value={this.state.modalDesc} placeholder="Description" /><br /><br />
+						<div style={{ display: 'flex', justifyContent: 'space-between' }}>
+							<DatePicker name="modalDate" style={{ width: '45%' }} value={moment(this.state.modalDue, 'YYYY-MM-DD')} onChange={this.handleDate} />
+							<Select style={{ width: '45%' }} value={this.state.modalStatus} onChange={(value) => this.handleSelect(value, 'modalStatus')} placeholder="Select Status">
+								<Option value="new">New</Option>
+								<Option value="inprogress">In Progress</Option>
+								<Option value="completed">Completed</Option>
+							</Select>
+						</div>
+						<br />
+						<div style={{ display: 'flex', justifyContent: 'space-between' }}>
+							<Select style={{ width: '35%' }} value={this.state.modalPriority} onChange={(value) => this.handleSelect(value, 'modalPriority')} placeholder="Select Priority">
+								<Option value="high">High</Option>
+								<Option value="normal">Normal</Option>
+								<Option value="low">Low</Option>
+							</Select>
+							<Select
+								mode="multiple"
+								style={{ width: '55%' }}
+								placeholder="Please select label"
+								defaultValue={[]}
+								value={this.state.modalLabels}
+								onChange={(value) => this.handleSelect(value, 'modalLabels')}
+							>
+								{this.props.labels.map((l, key) => {
+									return <Option key={l}>{l}</Option>
+								})}
+							</Select>
+						</div>
+					</Modal>
+						<Scrollbars
+							renderTrackHorizontal={props => <div {...props} className="track-horizontal" style={{ display: "none" }} />}
+							renderThumbHorizontal={props => <div {...props} className="thumb-horizontal" style={{ display: "none" }} />}
+							renderTrackVertical={props => <div {...props} className="track-vertical" style={{ display: "none" }} />}
+							renderThumbVertical={props => <div {...props} className="thumb-vertical" style={{ display: "none" }} />}
+						>
+							{this.state.todos.map((todo) => {
+								return <div key={todo.id} onClick={() => this.showEditModal(todo)} className="card" style={todo.priority == 'high' ? { borderTop: '5px solid #cf1322' } : todo.priority == 'normal' ? { borderTop: '5px solid #006d75' } : { borderTop: '5px solid #5b8c00' }} title={todo.name}>
+									<div className="card-row">
+										<p className="card-title">{todo.name}</p>
+										<div className="card-badge">
+											<Tag color={todo.priority == 'high' ? 'red' : todo.priority == 'normal' ? 'blue' : 'green'}>{todo.priority}</Tag>
+											<Tag>{todo.status}</Tag>
+										</div>
 									</div>
-								</div>
-								<div className="card-row">
-									<p className="card-desc">{todo.desc}</p>
-									<div className="card-badge">
-										{todo.label.map(function (l, key) {
-											return <Tag key={key}>{l}</Tag>
-										})}
+									<div className="card-row">
+										<p className="card-desc">{todo.desc}</p>
+										<div className="card-badge">
+											{todo.label.map(function (l, key) {
+												return <Tag key={key}>{l}</Tag>
+											})}
+										</div>
 									</div>
+									<div style={{ textAlign: 'left' }}>Due: {todo.due}</div>
 								</div>
-								<div style={{ textAlign: 'left' }}>Due: {todo.due}</div>
-							</div>
-						})}
-					</Scrollbars>
+							})}
+						</Scrollbars>
 				</Col>
 			</Row>
 		);

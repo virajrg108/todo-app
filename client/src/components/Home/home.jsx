@@ -32,6 +32,16 @@ class Home extends Component {
 			console.log(this.state.labels);
 		}, 100);
 	}
+	handleEditTodo = (todo) => {
+		var data = this.state.todos.map((t)=> {
+			if(todo.id == t.id ) return todo;
+			else return t
+		});
+		this.setState({todos: data});
+		setTimeout(()=> {
+			console.log(this.state.todos);
+		}, 1000);
+	}
 	render() {
 		return (
 			<Layout className="home">
@@ -54,6 +64,7 @@ class Home extends Component {
 								status={this.state.status} 
 								todos={this.state.todos} 
 								handleAddTodo={this.handleAddTodo}
+								handleEditTodo={this.handleEditTodo}
 								handleAddLabel={this.handleAddLabel} />
 						</TabPanel>
 						<TabPanel>
