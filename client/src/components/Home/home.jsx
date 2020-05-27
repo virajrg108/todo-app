@@ -41,7 +41,7 @@ class Home extends Component {
 		this.setState({todos: data});
 		setTimeout(()=> {
 			console.log(this.state.todos);
-		}, 1000);
+		}, 100);
 	}
 	render() {
 		return (
@@ -69,7 +69,10 @@ class Home extends Component {
 								handleAddLabel={this.handleAddLabel} />
 						</TabPanel>
 						<TabPanel>
-							<Board />
+							<Board
+								todos={this.state.todos}
+								handleEditTodo={this.handleEditTodo}
+								labels={this.state.labels} />
 						</TabPanel>
 					</Tabs>
 				</Content>
