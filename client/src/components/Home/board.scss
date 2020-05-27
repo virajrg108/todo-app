@@ -1,7 +1,36 @@
 .board {
-  .parent {
-    border: 1px solid #333;
-    padding: 3rem;
+  padding: 1.5rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  .kanban-col {
+    // padding: 0.1rem 3rem;
+    height: 500px !important;
+    width: 30% !important;
+    -webkit-box-shadow: 0px 0px 24px -4px rgba(170, 170, 170, 1);
+    -moz-box-shadow: 0px 0px 24px -4px rgba(170, 170, 170, 1);
+    box-shadow: 0px 0px 24px -4px rgba(170, 170, 170, 1);
+    border-radius: 5px;
+    .title {
+      position: sticky !important;
+      top: 0;
+      width: 100%;
+      font-family: 'Raleway', sans-serif;
+      font-size: 24px;
+      padding: 0.5rem 2rem;
+      color: #333;
+    }
+    .new {
+      background-color: #ffffb8;
+      color: #876800;
+    }
+    .inprogress {
+      background-color:#e6f7ff;
+      color:#003a8c;
+    }
+    .completed {
+      background-color: #eaff8f;
+      color: #3f6600;
+    }
     .child {
       cursor: grabbing;
       border: 1px dashed #f0f;

@@ -1,6 +1,7 @@
 import React from 'react';
+import { Scrollbars } from 'react-custom-scrollbars';
 import Dragula from 'react-dragula';
-
+import 'dragula/dist/dragula.css';
 import './board.scss';
 
 class Board extends React.Component {
@@ -19,8 +20,8 @@ class Board extends React.Component {
       this.swimlanes.complete.current,
     ]);
     this.drake.on('drop', (el, target, source, sibling) => {
-      console.log(el.props, target, source, sibling);
-      if(source == this.swimlanes.backlog.current) console.log(true);
+      console.log(el.dataset, target, source, sibling);
+      // if (source == this.swimlanes.backlog.current) console.log(true);
     });
   }
   componentWillUnmount() {
@@ -29,25 +30,61 @@ class Board extends React.Component {
   render() {
     return (
       <div className="board">
-        <div className="parent" name="new" ref={this.swimlanes.backlog}>
-          <div className="child" id="1">Swap me around</div>
-          <div className="child">Swap her around</div>
-          <div className="child">Swap him around</div>
-          <div className="child">Swap them around</div>
-          <div className="child">Swap us around</div>
-          <div className="child">Swap things around</div>
-          <div className="child">Swap everything around</div>
+        <div
+          className="kanban-col"
+        >
+          <div className="title new">New</div>
+          <div style={{ overflowY: 'auto', height: '440px' }}
+            ref={this.swimlanes.backlog}
+          >
+            <div>card</div>
+            <div>card</div>
+            <div>card</div>
+            <div>card</div>
+            <div>card</div>
+            <div>card</div>
+            <div>card</div>
+            <div>card</div>
+            <div>card</div>
+            <div>card</div>
+            <div>card</div>
+            <div>card</div>
+            <div>card</div>
+            <div>card</div>
+            <div>card</div>
+            <div>card</div>
+            <div>card</div>
+            <div>card</div>
+            <div>card</div>
+            <div>card</div>
+            <div>card</div>
+            <div>card</div>
+          </div>
         </div>
-        <hr />
-        <div className="parent" ref={this.swimlanes.inProgress}>
-          <div className="child">Swap me around</div>
-          <div className="child">Swap her around</div>
-          <div className="child">Swap him around</div>
-          <div className="child">Swap them around</div>
-          <div className="child">Swap us around</div>
-          <div className="child">Swap things around</div>
-          <div className="child">Swap everything around</div>
+        <div
+          className="kanban-col"
+        >
+          <div className="title inprogress">In Progress</div>
+          <div
+            ref={this.swimlanes.inProgress}
+          >
+            <div>card</div>
+            <div>card</div>
+            <div>card</div>
+            <div>card</div>
+            <div>card</div>
+            <div>card</div>
+          </div>
         </div>
+        <Scrollbars
+          renderTrackHorizontal={props => <div {...props} className="track-horizontal" style={{ display: "none" }} />}
+          renderThumbHorizontal={props => <div {...props} className="thumb-horizontal" style={{ display: "none" }} />}
+          renderTrackVertical={props => <div {...props} className="track-vertical" style={{ display: "none" }} />}
+          renderThumbVertical={props => <div {...props} className="thumb-vertical" style={{ display: "none" }} />}
+          className="kanban-col"
+        >
+          <div className="title completed">Completed</div>
+        </Scrollbars>
       </div>
     );
   }
