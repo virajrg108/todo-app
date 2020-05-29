@@ -25,12 +25,29 @@
 // // });
 
 // app.listen(process.env.PORT || 8080);
-
+require('dotenv').config();
 const express = require('express')
 const bodyParser = require('body-parser')
 const path = require('path')
 var cors = require('cors')
-
+const MongoClient = require('mongodb').MongoClient;
+const uri = process.env.uri;
+const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
+client.connect((err, db) => {
+    if(err) console.error("DB error");
+    const collection = client.db("todos").collection("todo");
+    app.get('/', function (req, res) {
+        res.sendFile(path.join(__dirname, '../client/build', 'index.html'));
+    });
+    
+    app.post('/auth/:type', cors(), function (req, res) {
+        console.log(req.params.type);
+        res.json({ status: 200, id: 123 })
+        collection.find({"name": "designUI"}).toArray(function (err, results) {
+            console.log(results); // output all records
+        })
+    })
+});
 var app = express()
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
@@ -39,13 +56,7 @@ app.use(express.static(path.join(__dirname, '../client/build')));
 
 const port = 8080
 
-app.get('/', function (req, res) {
-	res.sendFile(path.join(__dirname, '../client/build', 'index.html'));
-});
 
-app.post('/login', cors(), function (req, res) {
-    console.log(req.body)
-    res.json({ status:200, id:123 })
-})
 
 app.listen(port, () => console.log(`Example app listening on port ${port}!`))
+client.close();
