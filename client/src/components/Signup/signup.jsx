@@ -1,6 +1,6 @@
 import React from "react"
-import { Button, Input, Row, Col, Divider } from "antd"
-// import axios from 'axios'
+import { Button, Input, Row, Col, Divider, message } from "antd"
+import axios from 'axios'
 
 import history from '../../history';
 import './login.scss';
@@ -11,19 +11,30 @@ class Signup extends React.Component {
     super(props);
     this.handleClick = this.handleClick.bind(this);
     this.handleChange = this.handleChange.bind(this);
-    this.state = { name: '', pass: '' }
+    this.state = { name: '', pass: '', confirmPass: '' }
   }
   handleClick = e => {
-    const cred = { name: this.state.name, pass: this.state.pass }
-    console.log(cred);
-    this.props.setUser(cred.name);
-    history.push('/home');
-    // axios
-    //     .post('https://prism-organized-column.glitch.me/login/', cred)
-    //     .then((res) => this.props.setUser("viraj"))
-    //     .catch(err => {
-    //         console.error(err);
-    //     });
+    if (this.state.pass == this.state.confirmPass) {
+      const cred = { name: this.state.name, pass: this.state.pass }
+      console.log(cred);
+      axios
+        .post('/auth/signup', cred)
+        .then((res) => {
+          console.log(res);
+          if (res.data.status === 200) {
+            this.props.setUser(cred.name, res.data.id);
+            history.push('/home');
+            console.log("Login Successful");
+          }
+          else 
+            message.error("User with this name already exist !!!");
+        })
+        .catch(err => {
+          console.error(err);
+        });
+    }
+    else
+      message.error("Password does not match!!!");
   }
   handleChange = e => {
     var name = e.target.id;
@@ -43,9 +54,9 @@ class Signup extends React.Component {
           <div className="title">TASK MANAGEMENT TODO APP</div>
           <Input size="large" value={this.state.name} onChange={this.handleChange} id="name" placeholder="Username" /><br /><br />
           <Input.Password size="large" value={this.state.pass} onChange={this.handleChange} id="pass" placeholder="Password" /><br /><br />
-          <Input.Password size="large" value={this.state.pass} onChange={this.handleChange} id="pass" placeholder="Confirm Password" /><br /><br />
+          <Input.Password size="large" value={this.state.confirmPass} onChange={this.handleChange} id="confirmPass" placeholder="Confirm Password" /><br /><br />
           <Button className="login-btn" size="large" onClick={this.handleClick} type="primary">SIGN UP</Button>
-          <Button  onClick={this.handleRedirect} type="link">Already have an account? Login</Button>
+          <Button onClick={this.handleRedirect} type="link">Already have an account? Login</Button>
         </Col>
         <Col className="svg" span={8}>
           <img src={login} />

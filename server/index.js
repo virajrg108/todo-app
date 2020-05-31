@@ -24,6 +24,7 @@ client.connect((err, db) => {
 		res.sendFile(path.join(__dirname, '../client/build', 'index.html'));
 	});
 
+	//Authentication
 	app.post('/auth/:type', cors(), function (req, res) {
 		console.log(req.params.type, req.body);
 		if (req.params.type == "login")
@@ -45,7 +46,9 @@ client.connect((err, db) => {
 				else
 					res.json({ status: 500 });
 			});
-	})
+	});
+
+	//Todo
 });
 
 

@@ -18,17 +18,18 @@ class Login extends React.Component {
     console.log(cred);
     this.props.setUser(cred.name);
     history.push('/home');
-    // axios
-    //   .post('/login', cred)
-    //   .then((res) => {
-    //     console.log(res);
-    //     if(res.data.status === 200) {
-    //       this.props.setUser(cred.name, res.data.id);
-    //     }
-    //   })
-    //   .catch(err => {
-    //     console.error(err);
-    //   });
+    axios
+      .post('/auth/login', cred)
+      .then((res) => {
+        console.log(res);
+        if(res.data.status === 200) {
+          this.props.setUser(cred.name, res.data.id);
+          console.log("Login Successful");
+        }
+      })
+      .catch(err => {
+        console.error(err);
+      });
   }
   handleChange = e => {
     var name = e.target.id;
