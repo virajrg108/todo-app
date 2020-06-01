@@ -9,7 +9,7 @@ const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology:
 
 const app = express()
 app.use(bodyParser.urlencoded({
-	extended: false
+	extended: true
 }));
 app.use(bodyParser.json());
 app.use(cors())
@@ -20,6 +20,7 @@ const port = 8080
 client.connect((err, db) => {
 	if (err) console.error("DB error");
 	const authen = client.db("tasks").collection("users");
+	const todos = client.db("tasks").collection("todos");
 	app.get('/', function (req, res) {
 		res.sendFile(path.join(__dirname, '../client/build', 'index.html'));
 	});
@@ -35,11 +36,11 @@ client.connect((err, db) => {
 					res.json({ status: 500 });
 			});
 		else
-			authen.find({name:req.body.name}).toArray(function (err, results) {
+			authen.find({ name: req.body.name }).toArray(function (err, results) {
 				if (!err && results.length == 0) {
 					authen.insertOne(req.body, function (err, ress) {
 						if (err) res.json({ status: 500 });
-						res.json({status: 200, _id: ress.ops[0]._id})
+						res.json({ status: 200, _id: ress.ops[0]._id })
 						console.log(ress.ops[0]._id);
 					});
 				}
@@ -49,6 +50,27 @@ client.connect((err, db) => {
 	});
 
 	//Todo
+	app.post('/todo/:type', function (req, res) {
+		if (req.params.type == 'get') {
+			todos.find({ user: req.body.name }).toArray(function (err, results) {
+				console.log(results, err);
+				if (!err) {
+					res.json({ status: 200, todos: results });
+				}
+				else {
+					res.json({ status: 500 });
+				}
+			});
+		}
+		else if (req.params.type == 'add') {
+			todos.insertOne(req.body, function (err, results) {
+				console.log(results);
+				if (err) res.json({ status: 500 });
+				else
+					res.json({ status: 200, todo: results.ops[0] })
+			});
+		}
+	});
 });
 
 

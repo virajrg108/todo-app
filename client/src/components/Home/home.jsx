@@ -7,7 +7,7 @@ import Tasks from './tasks.jsx';
 import Board from './board';
 import 'react-tabs/style/react-tabs.css';
 import './home.scss';
-import todos from './todo';
+import axios from 'axios';
 
 const { Header, Content, Footer } = Layout;
 const { TabPane } = Tabs;
@@ -18,28 +18,60 @@ class Home extends Component {
 		this.state = {
 			labels: ['work', 'personal', 'casual'],
 			status: ['new', 'inprogress', 'completed'],
-			todos: todos
+			todos: []
 		}
 	}
-	handleAddTodo = (todo) => {
-		this.setState({ todos: [...this.state.todos, todo] });
+	componentDidMount() {
 		setTimeout(()=> {
+			const cred = {name: this.props.username};
+			console.log("cred", cred, this.props.username);
+			axios
+				.post('/todo/get', cred)
+				.then((res) => {
+					console.log(res);
+					if (res.data.status === 200) {
+						this.setState({ todos: res.data.todos });
+						console.log("Login Successful");
+					}
+				})
+				.catch(err => {
+					console.error(err);
+				});
+		},50);
+	}
+	handleAddTodo = (todo) => {
+		todo.user = this.props.username;
+		console.log(todo);
+		axios
+			.post('/todo/add', todo)
+			.then((res) => {
+				console.log(res);
+				if (res.data.status === 200) {
+					this.setState({ todos: [...this.state.todos, res.data.todo] });
+				}
+			})
+			.catch(err => {
+				console.error(err);
+				message.error("error occured !!");
+			});
+		
+		setTimeout(() => {
 			console.log(this.state.todos);
 		}, 1000);
 	}
 	handleAddLabel = (label) => {
-		this.setState({labels: [...this.state.labels, label]});
-		setTimeout(()=> {
+		this.setState({ labels: [...this.state.labels, label] });
+		setTimeout(() => {
 			console.log(this.state.labels);
 		}, 100);
 	}
 	handleEditTodo = (todo) => {
-		var data = this.state.todos.map((t)=> {
-			if(todo.id == t.id ) return todo;
+		var data = this.state.todos.map((t) => {
+			if (todo.id == t.id) return todo;
 			else return t
 		});
-		this.setState({todos: data});
-		setTimeout(()=> {
+		this.setState({ todos: data });
+		setTimeout(() => {
 			console.log(this.state.todos);
 		}, 100);
 	}
@@ -61,9 +93,9 @@ class Home extends Component {
 						</TabList>
 						<TabPanel>
 							<Tasks
-								labels={this.state.labels} 
-								status={this.state.status} 
-								todos={this.state.todos} 
+								labels={this.state.labels}
+								status={this.state.status}
+								todos={this.state.todos}
 								handleAddTodo={this.handleAddTodo}
 								handleEditTodo={this.handleEditTodo}
 								handleAddLabel={this.handleAddLabel} />

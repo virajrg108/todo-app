@@ -5,7 +5,7 @@ import store from '../../store';
 
 const mapStateToProps = (state) => {
   return {
-    username: state.user.username
+    username: state.user.name
   }
 }
 
