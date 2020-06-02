@@ -22,8 +22,8 @@ class Home extends Component {
 		}
 	}
 	componentDidMount() {
-		setTimeout(()=> {
-			const cred = {name: this.props.username};
+		setTimeout(() => {
+			const cred = { name: this.props.username };
 			console.log("cred", cred, this.props.username);
 			axios
 				.post('/todo/get', cred)
@@ -37,7 +37,7 @@ class Home extends Component {
 				.catch(err => {
 					console.error(err);
 				});
-		},50);
+		}, 50);
 	}
 	handleAddTodo = (todo) => {
 		todo.user = this.props.username;
@@ -54,7 +54,7 @@ class Home extends Component {
 				console.error(err);
 				message.error("error occured !!");
 			});
-		
+
 		setTimeout(() => {
 			console.log(this.state.todos);
 		}, 1000);
@@ -66,14 +66,28 @@ class Home extends Component {
 		}, 100);
 	}
 	handleEditTodo = (todo) => {
-		var data = this.state.todos.map((t) => {
-			if (todo.id == t.id) return todo;
-			else return t
-		});
-		this.setState({ todos: data });
-		setTimeout(() => {
-			console.log(this.state.todos);
-		}, 100);
+		axios
+			.post('/todo/edit', todo)
+			.then((res) => {
+				console.log(res);
+				if (res.data.status === 200) {
+					var data = this.state.todos.map((t) => {
+						if (todo._id == t._id) return todo;
+						else return t;
+					});
+					this.setState({ todos: data });
+					setTimeout(() => {
+						console.log(this.state.todos);
+					}, 100);
+				}
+				else
+					message.error('Edit Operation Failed !!!');
+			})
+			.catch(err => {
+				console.error(err);
+				message.error('Edit Operation failed');
+			});
+		
 	}
 	render() {
 		return (

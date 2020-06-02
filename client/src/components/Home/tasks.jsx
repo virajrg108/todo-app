@@ -36,11 +36,11 @@ class Tasks extends React.Component {
   }
 	showEditModal = (todo) => {
 		console.log(todo);
-		this.setState({ editModalVisible: true, modalTodoId: todo.id, modalName: todo.name, modalDesc: todo.desc, modalDue: todo.due, modalStatus: todo.status, modalPriority: todo.priority, modalLabels: todo.label })
+		this.setState({ editModalVisible: true, modalTodoId: todo._id, modalName: todo.name, modalDesc: todo.desc, modalDue: todo.due, modalStatus: todo.status, modalPriority: todo.priority, modalLabels: todo.label })
 	}
 	handleEditOk = () => {
 		this.setState({ editModalVisible: false });
-		this.props.handleEditTodo({id: this.state.modalTodoId, name: this.state.modalName, desc: this.state.modalDesc, due: this.state.modalDue, status: this.state.modalStatus, priority: this.state.modalPriority, label: this.state.modalLabels})
+		this.props.handleEditTodo({_id: this.state.modalTodoId, name: this.state.modalName, desc: this.state.modalDesc, due: this.state.modalDue, status: this.state.modalStatus, priority: this.state.modalPriority, label: this.state.modalLabels})
 	}
 	handleEditCancel = () => {
 		this.setState({ editModalVisible: false });
@@ -203,7 +203,7 @@ class Tasks extends React.Component {
 							renderThumbVertical={props => <div {...props} className="thumb-vertical" style={{ display: "none" }} />}
 						>
 							{this.state.todos.map((todo) => {
-								return <div key={todo.id} onClick={() => this.showEditModal(todo)} className="card" style={todo.priority == 'high' ? { borderTop: '5px solid #cf1322' } : todo.priority == 'normal' ? { borderTop: '5px solid #006d75' } : { borderTop: '5px solid #5b8c00' }} title={todo.name}>
+								return <div key={todo._id} onClick={() => this.showEditModal(todo)} className="card" style={todo.priority == 'high' ? { borderTop: '5px solid #cf1322' } : todo.priority == 'normal' ? { borderTop: '5px solid #006d75' } : { borderTop: '5px solid #5b8c00' }} title={todo.name}>
 									<div className="card-row">
 										<p className="card-title">{todo.name}</p>
 										<div className="card-badge">

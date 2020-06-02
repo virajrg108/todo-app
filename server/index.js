@@ -4,6 +4,7 @@ const bodyParser = require('body-parser')
 const path = require('path')
 var cors = require('cors')
 const MongoClient = require('mongodb').MongoClient;
+var ObjectID = require('mongodb').ObjectID;
 const uri = process.env.uri;
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
 
@@ -53,7 +54,6 @@ client.connect((err, db) => {
 	app.post('/todo/:type', function (req, res) {
 		if (req.params.type == 'get') {
 			todos.find({ user: req.body.name }).toArray(function (err, results) {
-				console.log(results, err);
 				if (!err) {
 					res.json({ status: 200, todos: results });
 				}
@@ -64,12 +64,21 @@ client.connect((err, db) => {
 		}
 		else if (req.params.type == 'add') {
 			todos.insertOne(req.body, function (err, results) {
-				console.log(results);
-				if (err) res.json({ status: 500 });
+				if (!err && results.ok==1) res.json({ status: 500 });
 				else
 					res.json({ status: 200, todo: results.ops[0] })
 			});
 		}
+		else if (req.params.type == 'edit') {
+			console.log(req.body);
+			todos.updateOne({_id: ObjectID(req.body._id)}, {$set: {name:req.body.name, desc:req.body.desc, due: req.body.due, status: req.body.status, priority: req.body.priority, label: req.body.label }}, function (err, results) {
+				console.log(results);
+				if (err ) res.json({ status: 500 });
+				else
+					res.json({ status: 200 })
+			});
+		}
+
 	});
 });
 

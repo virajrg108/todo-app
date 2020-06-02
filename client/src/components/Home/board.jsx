@@ -6,12 +6,12 @@ import Dragula from 'react-dragula';
 import 'dragula/dist/dragula.css';
 import './board.scss';
 
-const { Option }= Select;
+const { Option } = Select;
 
 class Board extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {editModalVisible: false, modalTodoId: -1, modalName: '', modalDesc:'', modalDue: '', modalStatus:'', modalPriority:'', modalLabels:[]}
+    this.state = { editModalVisible: false, modalTodoId: -1, modalName: '', modalDesc: '', modalDue: '', modalStatus: '', modalPriority: '', modalLabels: [] }
     this.swimlanes = {
       new: React.createRef(),
       inprogress: React.createRef(),
@@ -19,25 +19,25 @@ class Board extends React.Component {
     }
   }
   showEditModal = (todo) => {
-    this.setState({ editModalVisible: true, modalTodoId: todo.id, modalName: todo.name, modalDesc: todo.desc, modalDue: todo.due, modalStatus: todo.status, modalPriority: todo.priority, modalLabels: todo.label })
+    this.setState({ editModalVisible: true, modalTodoId: todo._id, modalName: todo.name, modalDesc: todo.desc, modalDue: todo.due, modalStatus: todo.status, modalPriority: todo.priority, modalLabels: todo.label })
   }
   handleEditSelect = (value, type) => {
     this.setState({ [type]: value });
   }
   handleEditOk = () => {
-		this.setState({ editModalVisible: false });
-		this.props.handleEditTodo({id: this.state.modalTodoId, name: this.state.modalName, desc: this.state.modalDesc, due: this.state.modalDue, status: this.state.modalStatus, priority: this.state.modalPriority, label: this.state.modalLabels})
-	}
-	handleEditCancel = () => {
-		this.setState({ editModalVisible: false });
+    this.props.handleEditTodo({ _id: this.state.modalTodoId, name: this.state.modalName, desc: this.state.modalDesc, due: this.state.modalDue, status: this.state.modalStatus, priority: this.state.modalPriority, label: this.state.modalLabels })
+    this.setState({ editModalVisible: false, modalTodoId: -1, modalName: '', modalDesc: '', modalDue: '', modalStatus: '', modalPriority: '', modalLabels: [] });
   }
-	handleDate = (date, dateString) => {
+  handleEditCancel = () => {
+    this.setState({ editModalVisible: false, modalTodoId: -1, modalName: '', modalDesc: '', modalDue: '', modalStatus: '', modalPriority: '', modalLabels: [] });
+  }
+  handleDate = (date, dateString) => {
     this.setState({ modalDue: dateString });
   }
   handleChange = e => {
-		var name = e.target.name;
-		this.setState({[name]: e.target.value});
-	}
+    var name = e.target.name;
+    this.setState({ [name]: e.target.value });
+  }
   componentDidMount() {
     this.drake = Dragula([
       this.swimlanes.new.current,
@@ -100,7 +100,7 @@ class Board extends React.Component {
           <div data-status="new" style={{ overflowY: 'auto', height: '440px' }} ref={this.swimlanes.new}>
             {this.props.todos.map((todo, key) => {
               if (todo.status == 'new') {
-                return <div key={key} onClick={()=>this.showEditModal(todo)} data-todo={JSON.stringify(todo)} className="kanban-card">
+                return <div key={key} onClick={() => this.showEditModal(todo)} data-todo={JSON.stringify(todo)} className="kanban-card">
                   <div className="card-title">{todo.name}</div>
                   <div className="card-desc">{todo.desc}</div>
                   <div>
@@ -119,7 +119,7 @@ class Board extends React.Component {
           <div data-status="inprogress" style={{ overflowY: 'auto', height: '440px' }} ref={this.swimlanes.inprogress}>
             {this.props.todos.map((todo, key) => {
               if (todo.status == 'inprogress') {
-                return <div key={key} onClick={()=>this.showEditModal(todo)} data-todo={JSON.stringify(todo)} className="kanban-card">
+                return <div key={key} onClick={() => this.showEditModal(todo)} data-todo={JSON.stringify(todo)} className="kanban-card">
                   <div className="card-title">{todo.name}</div>
                   <div className="card-desc">{todo.desc}</div>
                   <div>
@@ -138,7 +138,7 @@ class Board extends React.Component {
           <div data-status="completed" style={{ overflowY: 'auto', height: '440px' }} ref={this.swimlanes.completed}>
             {this.props.todos.map((todo, key) => {
               if (todo.status == 'completed') {
-                return <div key={key} onClick={()=>this.showEditModal(todo)} data-todo={JSON.stringify(todo)} className="kanban-card">
+                return <div key={key} onClick={() => this.showEditModal(todo)} data-todo={JSON.stringify(todo)} className="kanban-card">
                   <div className="card-title">{todo.name}</div>
                   <div className="card-desc">{todo.desc}</div>
                   <div>
