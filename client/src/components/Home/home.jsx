@@ -16,22 +16,22 @@ class Home extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			labels: ['work', 'personal', 'casual'],
+			labels: this.props.user.label,
 			status: ['new', 'inprogress', 'completed'],
 			todos: []
 		}
 	}
 	componentDidMount() {
+		this.setState({labels: this.props.user.label})
 		setTimeout(() => {
-			const cred = { name: this.props.username };
-			console.log("cred", cred, this.props.username);
+			const cred = { name: this.props.user.name };
+			console.log("cred", cred, this.props.user.name);
 			axios
 				.post('/todo/get', cred)
 				.then((res) => {
 					console.log(res);
 					if (res.data.status === 200) {
 						this.setState({ todos: res.data.todos });
-						console.log("Login Successful");
 					}
 				})
 				.catch(err => {
@@ -40,7 +40,7 @@ class Home extends Component {
 		}, 50);
 	}
 	handleAddTodo = (todo) => {
-		todo.user = this.props.username;
+		todo.user = this.props.user.name;
 		console.log(todo);
 		axios
 			.post('/todo/add', todo)
@@ -59,8 +59,30 @@ class Home extends Component {
 			console.log(this.state.todos);
 		}, 1000);
 	}
-	handleAddLabel = (label) => {
-		this.setState({ labels: [...this.state.labels, label] });
+	handleDeleteTodo = (_id) => {
+		console.log(_id);
+		axios
+			.post('/todo/delete', {_id})
+			.then((res) => {
+				console.log(res);
+				if (res.data.status === 200) {
+					var data = this.state.todos.filter((t)=> {
+						return (t._id!=_id);
+					})
+					this.setState({ todos: data});
+				}
+			})
+			.catch(err => {
+				console.error(err);
+				message.error("error occured !!");
+			});
+
+		setTimeout(() => {
+			console.log(this.state.todos);
+		}, 1000);
+	}
+	handleEditLabel = (labels) => {
+		this.setState({ labels });
 		setTimeout(() => {
 			console.log(this.state.labels);
 		}, 100);
@@ -112,13 +134,15 @@ class Home extends Component {
 								todos={this.state.todos}
 								handleAddTodo={this.handleAddTodo}
 								handleEditTodo={this.handleEditTodo}
-								handleAddLabel={this.handleAddLabel} />
+								handleDeleteTodo={this.handleDeleteTodo}
+								handleEditLabel={this.handleEditLabel} />
 						</TabPanel>
 						<TabPanel>
 							<Board
 								todos={this.state.todos}
 								handleEditTodo={this.handleEditTodo}
-								labels={this.state.labels} />
+								labels={this.state.labels}
+								handleDeleteTodo={this.handleDeleteTodo} />
 						</TabPanel>
 					</Tabs>
 				</Content>

@@ -4,8 +4,9 @@ import Home from './home';
 import store from '../../store';
 
 const mapStateToProps = (state) => {
+  console.log(state)
   return {
-    username: state.user.name
+    user: state.user
   }
 }
 

@@ -1,10 +1,11 @@
 import React from 'react';
-import { Row, Col, Divider, Input, DatePicker, Select, Button, Tag, Modal } from 'antd';
+import { Row, Col, Divider, Input, Popconfirm, DatePicker, Select, Tag, Modal, Tooltip } from 'antd';
 import moment from 'moment';
+import { DeleteOutlined } from '@ant-design/icons';
 import { Scrollbars } from 'react-custom-scrollbars';
 import { SearchOutlined } from '@ant-design/icons';
 import AddTodoModal from './addTodoModal';
-import AddLabel from './addLabel';
+import EditLabel from './editLabel';
 import './tasks.scss';
 
 const { RangePicker } = DatePicker;
@@ -20,27 +21,32 @@ class Tasks extends React.Component {
 			selectedLabels: [],
 			selectedStatus: [],
 			todos: this.props.todos,
-			editModalVisible: false, modaTodoID:-1, modalName: '', modalDesc: '', modalDue: '', modalStatus: '', modalPriority: '', modalLabels: []
+			editModalVisible: false, modaTodoID: -1, modalName: '', modalDesc: '', modalDue: '', modalStatus: '', modalPriority: '', modalLabels: []
 		};
 		this.showEditModal = this.showEditModal.bind(this);
 	}
+	handleDelete = (e, _id) => {
+		e.stopPropagation();
+		console.log('Delete', _id);
+		this.props.handleDeleteTodo(_id);
+	}
 	handleChange = e => {
 		var name = e.target.name;
-		this.setState({[name]: e.target.value});
+		this.setState({ [name]: e.target.value });
 	}
 	handleDate = (date, dateString) => {
-    this.setState({ date: dateString });
-  }
-  handleEditSelect = (value, type) => {
-    this.setState({ [type]: value });
-  }
+		this.setState({ date: dateString });
+	}
+	handleEditSelect = (value, type) => {
+		this.setState({ [type]: value });
+	}
 	showEditModal = (todo) => {
 		console.log(todo);
 		this.setState({ editModalVisible: true, modalTodoId: todo._id, modalName: todo.name, modalDesc: todo.desc, modalDue: todo.due, modalStatus: todo.status, modalPriority: todo.priority, modalLabels: todo.label })
 	}
 	handleEditOk = () => {
 		this.setState({ editModalVisible: false });
-		this.props.handleEditTodo({_id: this.state.modalTodoId, name: this.state.modalName, desc: this.state.modalDesc, due: this.state.modalDue, status: this.state.modalStatus, priority: this.state.modalPriority, label: this.state.modalLabels})
+		this.props.handleEditTodo({ _id: this.state.modalTodoId, name: this.state.modalName, desc: this.state.modalDesc, due: this.state.modalDue, status: this.state.modalStatus, priority: this.state.modalPriority, label: this.state.modalLabels })
 	}
 	handleEditCancel = () => {
 		this.setState({ editModalVisible: false });
@@ -51,8 +57,8 @@ class Tasks extends React.Component {
 	handleAddTodo = (todo) => {
 		this.props.handleAddTodo(todo);
 	}
-	handleAddLabel = (label) => {
-		this.props.handleAddLabel(label);
+	handleEditLabel = (labels) => {
+		this.props.handleEditLabel(labels);
 	}
 	searchFilter = (name) => {
 		if (this.state.searchTxt == '') return true;
@@ -154,7 +160,7 @@ class Tasks extends React.Component {
 							{Status}
 						</Select>
 						<br /><br />
-						<AddLabel handleAddLabel={this.handleAddLabel} />
+						<EditLabel labels={this.props.labels} handleEditLabel={this.handleEditLabel} />
 					</div>
 				</Col>
 				<Divider type="vertical" className="divider" />
@@ -196,33 +202,40 @@ class Tasks extends React.Component {
 							</Select>
 						</div>
 					</Modal>
-						<Scrollbars
-							renderTrackHorizontal={props => <div {...props} className="track-horizontal" style={{ display: "none" }} />}
-							renderThumbHorizontal={props => <div {...props} className="thumb-horizontal" style={{ display: "none" }} />}
-							renderTrackVertical={props => <div {...props} className="track-vertical" style={{ display: "none" }} />}
-							renderThumbVertical={props => <div {...props} className="thumb-vertical" style={{ display: "none" }} />}
-						>
-							{this.state.todos.map((todo) => {
-								return <div key={todo._id} onClick={() => this.showEditModal(todo)} className="card" style={todo.priority == 'high' ? { borderTop: '5px solid #cf1322' } : todo.priority == 'normal' ? { borderTop: '5px solid #006d75' } : { borderTop: '5px solid #5b8c00' }} title={todo.name}>
-									<div className="card-row">
-										<p className="card-title">{todo.name}</p>
-										<div className="card-badge">
-											<Tag color={todo.priority == 'high' ? 'red' : todo.priority == 'normal' ? 'blue' : 'green'}>{todo.priority}</Tag>
-											<Tag>{todo.status}</Tag>
-										</div>
+					<Scrollbars
+						renderTrackHorizontal={props => <div {...props} className="track-horizontal" style={{ display: "none" }} />}
+						renderThumbHorizontal={props => <div {...props} className="thumb-horizontal" style={{ display: "none" }} />}
+						renderTrackVertical={props => <div {...props} className="track-vertical" style={{ display: "none" }} />}
+						renderThumbVertical={props => <div {...props} className="thumb-vertical" style={{ display: "none" }} />}
+					>
+						{this.state.todos.map((todo) => {
+							return <div key={todo._id} onClick={() => this.showEditModal(todo)} className="card" style={todo.priority == 'high' ? { borderTop: '5px solid #cf1322' } : todo.priority == 'normal' ? { borderTop: '5px solid #006d75' } : { borderTop: '5px solid #5b8c00' }} title={todo.name}>
+								<div className="card-row">
+									<div className="card-title">{todo.name}</div>
+									<div className="card-badge">
+										<Tag color={todo.priority == 'high' ? 'red' : todo.priority == 'normal' ? 'blue' : 'green'}>{todo.priority}</Tag>
+										<Tag>{todo.status}</Tag>
 									</div>
-									<div className="card-row">
-										<p className="card-desc">{todo.desc}</p>
-										<div className="card-badge">
-											{todo.label.map(function (l, key) {
-												return <Tag key={key}>{l}</Tag>
-											})}
-										</div>
-									</div>
-									<div style={{ textAlign: 'left' }}>Due: {todo.due}</div>
 								</div>
-							})}
-						</Scrollbars>
+								<div className="card-row">
+									<div className="card-desc">{todo.desc}</div>
+									<div className="card-badge">
+										{todo.label.map(function (l, key) {
+											return <Tag key={key}>{l}</Tag>
+										})}
+									</div>
+								</div>
+								<div className="card-row">
+									<div className="card-due">Due: {todo.due}</div>
+									<div className="card-delete">
+										<Tooltip title="Delete todo">
+											<DeleteOutlined onClick={(e)=>this.handleDelete(e, todo._id)} style={{ fontSize: '16px', color: '#820014' }} />
+										</Tooltip>
+									</div>
+								</div>
+							</div>
+						})}
+					</Scrollbars>
 				</Col>
 			</Row>
 		);

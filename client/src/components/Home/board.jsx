@@ -1,8 +1,10 @@
 import React from 'react';
 import { Scrollbars } from 'react-custom-scrollbars';
-import { Tag, Modal, Input, Select, DatePicker } from 'antd';
+import { Tag, Modal, Input, Select, DatePicker, Tooltip } from 'antd';
 import moment from 'moment';
 import Dragula from 'react-dragula';
+import { DeleteOutlined } from '@ant-design/icons';
+
 import 'dragula/dist/dragula.css';
 import './board.scss';
 
@@ -17,6 +19,11 @@ class Board extends React.Component {
       inprogress: React.createRef(),
       completed: React.createRef(),
     }
+  }
+  handleDelete = (e, _id) => {
+    e.stopPropagation();
+    console.log('Delete', _id);
+    this.props.handleDeleteTodo(_id);
   }
   showEditModal = (todo) => {
     this.setState({ editModalVisible: true, modalTodoId: todo._id, modalName: todo.name, modalDesc: todo.desc, modalDue: todo.due, modalStatus: todo.status, modalPriority: todo.priority, modalLabels: todo.label })
@@ -103,11 +110,16 @@ class Board extends React.Component {
                 return <div key={key} onClick={() => this.showEditModal(todo)} data-todo={JSON.stringify(todo)} className="kanban-card">
                   <div className="card-title">{todo.name}</div>
                   <div className="card-desc">{todo.desc}</div>
-                  <div>
-                    <Tag>{todo.priority}</Tag>
-                    {todo.label.map((l, key) => {
-                      return <Tag key={key}>{l}</Tag>
-                    })}
+                  <div className="card-row">
+                    <div className="card-labels">
+                      <Tag>{todo.priority}</Tag>
+                      {todo.label.map((l, key) => {
+                        return <Tag key={key}>{l}</Tag>
+                      })}
+                    </div>
+                    <Tooltip className="card-delete" title="Delete todo">
+                      <DeleteOutlined onClick={(e) => this.handleDelete(e, todo._id)} style={{ fontSize: '16px', color: '#820014' }} />
+                    </Tooltip>
                   </div>
                 </div>
               }
@@ -122,11 +134,16 @@ class Board extends React.Component {
                 return <div key={key} onClick={() => this.showEditModal(todo)} data-todo={JSON.stringify(todo)} className="kanban-card">
                   <div className="card-title">{todo.name}</div>
                   <div className="card-desc">{todo.desc}</div>
-                  <div>
-                    <Tag>{todo.priority}</Tag>
-                    {todo.label.map((l, key) => {
-                      return <Tag key={key}>{l}</Tag>
-                    })}
+                  <div className="card-row">
+                    <div className="card-labels">
+                      <Tag>{todo.priority}</Tag>
+                      {todo.label.map((l, key) => {
+                        return <Tag key={key}>{l}</Tag>
+                      })}
+                    </div>
+                    <Tooltip className="card-delete" title="Delete todo">
+                      <DeleteOutlined onClick={(e) => this.handleDelete(e, todo._id)} style={{ fontSize: '16px', color: '#820014' }} />
+                    </Tooltip>
                   </div>
                 </div>
               }
@@ -141,11 +158,16 @@ class Board extends React.Component {
                 return <div key={key} onClick={() => this.showEditModal(todo)} data-todo={JSON.stringify(todo)} className="kanban-card">
                   <div className="card-title">{todo.name}</div>
                   <div className="card-desc">{todo.desc}</div>
-                  <div>
-                    <Tag>{todo.priority}</Tag>
-                    {todo.label.map((l, key) => {
-                      return <Tag key={key}>{l}</Tag>
-                    })}
+                  <div className="card-row">
+                    <div className="card-labels">
+                      <Tag>{todo.priority}</Tag>
+                      {todo.label.map((l, key) => {
+                        return <Tag key={key}>{l}</Tag>
+                      })}
+                    </div>
+                    <Tooltip className="card-delete" title="Delete todo">
+                      <DeleteOutlined onClick={(e) => this.handleDelete(e, todo._id)} style={{ fontSize: '16px', color: '#820014' }} />
+                    </Tooltip>
                   </div>
                 </div>
               }

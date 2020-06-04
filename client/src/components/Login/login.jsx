@@ -23,8 +23,8 @@ class Login extends React.Component {
       .then((res) => {
         console.log(res);
         if(res.data.status === 200) {
-          this.props.setUser(cred.name, res.data.id);
-          console.log("Login Successful");
+          this.props.setUser(cred.name, res.data._id, res.data.label);
+          console.log("Login Successful", cred.name, res.data._id, res.data.label);
         }
       })
       .catch(err => {

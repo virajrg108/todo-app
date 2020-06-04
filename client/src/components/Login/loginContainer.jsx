@@ -11,8 +11,9 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    setUser: (name, id) => {
-      dispatch({id, name, type: 'SET_USER' });
+    setUser: (name, _id, label) => {
+      console.log('login cont', name, _id, label);
+      dispatch({_id, name, label, type: 'SET_USER' });
       console.log("container reached!!");
     //   history.push('/home');
     }

@@ -31,8 +31,10 @@ client.connect((err, db) => {
 		console.log(req.params.type, req.body);
 		if (req.params.type == "login")
 			authen.find(req.body).toArray(function (err, results) {
-				if (!err)
-					res.json({ status: 200, id: results[0]._id });
+				console.log(results[0])
+				if (!err) {
+					res.json({ status: 200, _id: results[0]._id, label: results[0].label });
+				}
 				else
 					res.json({ status: 500 });
 			});
@@ -41,7 +43,7 @@ client.connect((err, db) => {
 				if (!err && results.length == 0) {
 					authen.insertOne(req.body, function (err, ress) {
 						if (err) res.json({ status: 500 });
-						res.json({ status: 200, _id: ress.ops[0]._id })
+						res.json({ status: 200, _id: ress.ops[0]._id, label: results[0].label })
 						console.log(ress.ops[0]._id);
 					});
 				}
@@ -64,18 +66,28 @@ client.connect((err, db) => {
 		}
 		else if (req.params.type == 'add') {
 			todos.insertOne(req.body, function (err, results) {
-				if (!err && results.ok==1) res.json({ status: 500 });
+				if (!err && results.ok == 1) res.json({ status: 500 });
 				else
 					res.json({ status: 200, todo: results.ops[0] })
 			});
 		}
 		else if (req.params.type == 'edit') {
 			console.log(req.body);
-			todos.updateOne({_id: ObjectID(req.body._id)}, {$set: {name:req.body.name, desc:req.body.desc, due: req.body.due, status: req.body.status, priority: req.body.priority, label: req.body.label }}, function (err, results) {
+			todos.updateOne({ _id: ObjectID(req.body._id) }, { $set: { name: req.body.name, desc: req.body.desc, due: req.body.due, status: req.body.status, priority: req.body.priority, label: req.body.label } }, function (err, results) {
 				console.log(results);
-				if (err ) res.json({ status: 500 });
+				if (err) res.json({ status: 500 });
 				else
 					res.json({ status: 200 })
+			});
+		}
+		else if (req.params.type == 'delete') {
+			console.log(req.body);
+			todos.deleteOne({ _id: ObjectID(req.body._id) }, function (err, results) {
+				if (!err && results.deleteCount != 0) {
+					res.json({ status: 200 });
+				}
+				else
+					res.json({ status: 500 });
 			});
 		}
 

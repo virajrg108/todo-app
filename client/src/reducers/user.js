@@ -5,7 +5,8 @@ const user = (state = {}, action) => {
 			return {
 				// ...state,
 				name: action.name,
-				id: action.id
+				_id: action._id,
+				label: action.label
 			}
 
 		default:
