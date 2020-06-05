@@ -21,4 +21,5 @@ If you want to jump to the part where I have explained how to run this applicati
 <h3><li>Login Page</li></h3>
 <img src="https://i.ibb.co/yYY88ny/login.png" />
 <h3><li>Signup Page</li></h3>
-<img src="https://i.ibb.co/yYY88ny/login.png" />
+<img src="https://i.ibb.co/pnJCyL1/signup.png" alt="signup" border="0">
+<img src="https://i.ibb.co/bBM9y17/tasks-1.png" alt="tasks-1" border="0">
