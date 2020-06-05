@@ -53,23 +53,15 @@ Also observe that while dragging the todo the application creates a shadow eleme
 <img src="https://i.ibb.co/bF2RVMP/board-3.png" alt="board-3" border="0">
 
 <h2 id="#backend">Backend</h2>
-<h3>Given below is a table of all the APIs including the request and response format.</h3>
+<h4>Given below is a table of all the APIs including the request and response format.</h4>
 
 
 | EndPoint    | Request Type | Request format                        | Response format                       |
 |-------------|--------------|---------------------------------------|---------------------------------------|
-| /auth/login | POST         | Object: {name: String, pass: String } | <pre>Object: {status: number, _id: String}</pre> |
-|             |              |                                       |                                       |
-|             |              |                                       |                                       |
-
-
-
-
-| EndPoint |  Request Type | Request format  | Response format  |
-|--------|---|---|---|---|
-|/auth/login |POST|<pre>Object: {name: String, pass: String }</pre> | <pre>Object: {status: number, _id: String} </pre>|
-|/auth/signup|POST|<pre>Object: {name: String, pass: String }</pre>|<pre>Object: {status: number, _id: String} </pre>|
-|/todos/get|GET|-|Array of todos|
-|/todos/add|POST|<pre>Todo Object</pre>|
-
-<pre>Object:{}</pre>
+| /auth/login | POST         | <pre>Object: {name: String, pass: String }</pre> | <pre>Object: {status: number, _id: String}</pre> | 
+| /auth/signup| POST            |  <pre>Object: {name: String, pass: String }</pre>            | <pre>Object: {status: number, _id: String}</pre>|
+| /todos/get| GET | - | Array of todos|
+| todos/add | POST | Todo Object | Todo Object|
+| /todos/edit | POST | Todo Object | <pre>Status: number</pre> |
+| /todos/delete | POST | <pre>{ _id: String }</pre> | <pre>Status: number</pre>|
+| /labels | POST | Array of labels | <pre>Status: number</pre>|
