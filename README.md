@@ -19,4 +19,6 @@ If you want to jump to the part where I have explained how to run this applicati
 <p>As the names suggest the Login Page and Signup page contains Login and Signup form. The Home page contains two tabs, Tasks and Board.
 <ol>
 <h3><li>Login Page</li></h3>
-<img src="screenshots/login.png" />
+<img src="https://i.ibb.co/yYY88ny/login.png" />
+<h3><li>Signup Page</li></h3>
+<img src="https://i.ibb.co/yYY88ny/login.png" />
