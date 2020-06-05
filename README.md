@@ -1,9 +1,10 @@
 # Task Manager Application
 ## A Simple todo app with elegant design
-<img src="https://img.shields.io/badge/Mongodb-3.5.7-yellowgreen">
+<span><img src="https://img.shields.io/badge/Mongo%20DB-3.5.7-yellowgreen">
 <img src="https://img.shields.io/badge/Express-4.17.1-lightgrey">
 <img src="https://img.shields.io/badge/React%20JS-16.13.1-blue"/>
-<img src="https://img.shields.io/badge/Node%20JS-12.17.0-green"/>
+<img src="https://img.shields.io/badge/Node%20JS-12.17.0-green"/></span>
+
 <br/>
 This project is made with MERN (Mongo, Express, ReactJS, NodeJS) techstack.
 
