@@ -35,7 +35,12 @@ class Tasks extends React.Component {
 		this.setState({ [name]: e.target.value });
 	}
 	handleDate = (date, dateString) => {
-		this.setState({ date: dateString });
+		if (dateString !== "") {
+			this.setState({ modalDue: moment(dateString, 'YYYY-MM-DD')});
+		}
+		else {
+			this.setState({ rangeDate: [null, null] });
+		}
 	}
 	handleEditSelect = (value, type) => {
 		this.setState({ [type]: value });
@@ -46,7 +51,7 @@ class Tasks extends React.Component {
 	}
 	handleEditOk = () => {
 		this.setState({ editModalVisible: false });
-		this.props.handleEditTodo({ _id: this.state.modalTodoId, name: this.state.modalName, desc: this.state.modalDesc, due: this.state.modalDue, status: this.state.modalStatus, priority: this.state.modalPriority, label: this.state.modalLabels })
+		this.props.handleEditTodo({ _id: this.state.modalTodoId, name: this.state.modalName, desc: this.state.modalDesc, due: moment(this.state.modalDue).format('YYYY-MM-DD'), status: this.state.modalStatus, priority: this.state.modalPriority, label: this.state.modalLabels })
 	}
 	handleEditCancel = () => {
 		this.setState({ editModalVisible: false });
