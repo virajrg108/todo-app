@@ -58,7 +58,7 @@ Also observe that while dragging the todo the application creates a shadow eleme
 
 | EndPoint    | Request Type | Request format                        | Response format                       |
 |-------------|--------------|---------------------------------------|---------------------------------------|
-| /auth/login | POST         | Object: {name: String, pass: String } | wObject: {status: number, _id: String} |
+| /auth/login | POST         | Object: {name: String, pass: String } | <pre>Object: {status: number, _id: String}</pre> |
 |             |              |                                       |                                       |
 |             |              |                                       |                                       |
 
