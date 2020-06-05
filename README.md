@@ -55,6 +55,16 @@ Also observe that while dragging the todo the application creates a shadow eleme
 <h2 id="#backend">Backend</h2>
 <h3>Given below is a table of all the APIs including the request and response format.</h3>
 
+
+| EndPoint    | Request Type | Request format                        | Response format                       |
+|-------------|--------------|---------------------------------------|---------------------------------------|
+| /auth/login | POST         | Object: {name: String, pass: String } | Object: {status: number, _id: String} |
+|             |              |                                       |                                       |
+|             |              |                                       |                                       |
+
+
+
+
 | EndPoint |  Request Type | Request format  | Response format  |
 |--------|---|---|---|---|
 |/auth/login |POST|<pre>Object: {name: String, pass: String }</pre> | <pre>Object: {status: number, _id: String} </pre>|
