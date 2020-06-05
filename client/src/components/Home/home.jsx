@@ -25,11 +25,9 @@ class Home extends Component {
 		this.setState({labels: this.props.user.label})
 		setTimeout(() => {
 			const cred = { name: this.props.user.name };
-			console.log("cred", cred, this.props.user.name);
 			axios
 				.post('/todo/get', cred)
 				.then((res) => {
-					console.log(res);
 					if (res.data.status === 200) {
 						this.setState({ todos: res.data.todos });
 					}
@@ -60,11 +58,9 @@ class Home extends Component {
 		}, 1000);
 	}
 	handleDeleteTodo = (_id) => {
-		console.log(_id);
 		axios
 			.post('/todo/delete', {_id})
 			.then((res) => {
-				console.log(res);
 				if (res.data.status === 200) {
 					var data = this.state.todos.filter((t)=> {
 						return (t._id!=_id);
@@ -91,7 +87,6 @@ class Home extends Component {
 		axios
 			.post('/todo/edit', todo)
 			.then((res) => {
-				console.log(res);
 				if (res.data.status === 200) {
 					var data = this.state.todos.map((t) => {
 						if (todo._id == t._id) return todo;

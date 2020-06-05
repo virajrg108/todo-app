@@ -7,7 +7,7 @@ const { Option } = Select;
 class EditLabel extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { visible: false, labels: this.props.labels };
+    this.state = { visible: false};
   }
   showModal = () => {
     this.setState({ visible: true });
@@ -19,9 +19,13 @@ class EditLabel extends React.Component {
       this.handleFilter();
     }, 100);
   }
+  handleEditLabel = (labels) => {
+    console.log(labels);
+    this.props.handleEditLabel(labels);
+    this.setState({visible: false});
+  }
   handleOk = e => {
     console.log(this.state);
-    this.props.handleEditLabel(this.state.labels);
     this.setState({ visible: false });
   };
   handleCancel = e => {
@@ -32,11 +36,11 @@ class EditLabel extends React.Component {
       <div>
         <Button size="large" type="primary" onClick={this.showModal}>Edit Labels</Button>
         <Modal
-          title="Add Label"
+          title="Edit Labels"
           visible={this.state.visible}
           onOk={this.handleOk}
           onCancel={this.handleCancel}>
-            <DynamicSet />
+            <DynamicSet labels={this.props.labels} handleEditLabel={this.handleEditLabel} />
         </Modal>
       </div>
     );

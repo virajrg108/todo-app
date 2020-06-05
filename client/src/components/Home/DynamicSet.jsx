@@ -27,14 +27,13 @@ class DynamicFieldSet extends React.Component {
     document.getElementById("loadBtn").click();
   }
   onFinish = values => {
-    console.log('Received values of form:', values);
+    this.props.handleEditLabel(values.names);
   };
   render() {
     return (
       <Form initialValues={['personal']} name="dynamic_form_item" {...formItemLayoutWithOutLabel} onFinish={this.onFinish}>
         <Form.List name="names">
           {(fields, { add, remove }) => {
-
             return (
               <div>
                 {fields.map((field, index) => (

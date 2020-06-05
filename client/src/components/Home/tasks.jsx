@@ -58,6 +58,7 @@ class Tasks extends React.Component {
 		this.props.handleAddTodo(todo);
 	}
 	handleEditLabel = (labels) => {
+		console.log(labels, "tasks");
 		this.props.handleEditLabel(labels);
 	}
 	searchFilter = (name) => {

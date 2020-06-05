@@ -17,14 +17,14 @@ class Login extends React.Component {
     const cred = { name: this.state.name, pass: this.state.pass }
     console.log(cred);
     this.props.setUser(cred.name);
-    history.push('/home');
     axios
       .post('/auth/login', cred)
       .then((res) => {
         console.log(res);
-        if(res.data.status === 200) {
+        if (res.data.status === 200) {
           this.props.setUser(cred.name, res.data._id, res.data.label);
           console.log("Login Successful", cred.name, res.data._id, res.data.label);
+          history.push('/home');
         }
       })
       .catch(err => {
@@ -37,9 +37,6 @@ class Login extends React.Component {
   }
   handleRedirect = e => {
     history.push('/signup');
-  }
-  componentDidMount() {
-
   }
   render() {
     return (
