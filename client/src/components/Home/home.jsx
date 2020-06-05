@@ -45,7 +45,7 @@ class Home extends Component {
 			.then((res) => {
 				console.log(res);
 				if (res.data.status === 200) {
-					this.setState({ todos: [...this.state.todos, res.data.todo] });
+					this.setState({ todos: [res.data.todo, ...this.state.todos] });
 				}
 			})
 			.catch(err => {

@@ -1,5 +1,6 @@
 .home {
-	min-height: 100vh !important;
+	height: 100vh !important;
+	overflow: hidden;
 	.title {
 		color: #eee;
 		font-size: 30px;
@@ -8,7 +9,6 @@
 	}
 	.header-wrapper {
 		background-color: #072b4c;
-		box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.2);
 	}
 	.header {
 		display: flex;
@@ -29,6 +29,9 @@
 	}
 	.tabs {
 		background-color: #fff;
+	}
+	.react-tabs {
+		margin-top: -10px;
 	}
 	.react-tabs__tab-list {
 		margin: 0;
