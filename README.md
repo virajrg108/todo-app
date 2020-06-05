@@ -52,4 +52,13 @@ Also observe that while dragging the todo the application creates a shadow eleme
 <h3><li>Home Page - Board - Edit Todo</li></h3>
 <img src="https://i.ibb.co/bF2RVMP/board-3.png" alt="board-3" border="0">
 
-<h2>Backend</h2>
+<h2 id="#backend">Backend</h2>
+<h3>Given below is a table of all the APIs including the request and response format.
+
+| EndPoint |  Request Type | Request format  | Response format  |
+|--------|---|---|---|---|
+|/auth/login |POST| <pre>Object: {name: String, pass: String }</pre> | <pre>Object: {status: number, _id: String} |
+|        |   |   |   |   |
+|        |   |   |   |   |
+
+<pre>Object:{}</pre>
