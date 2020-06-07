@@ -88,7 +88,7 @@ Also observe that while dragging the todo the application creates a shadow eleme
 | /todos/delete | POST | <pre>{ _id: String }</pre> | <pre>Status: number</pre>|
 | /labels | POST | Array of labels | <pre>Status: number</pre>|
 
-<h2>Database</h2>
+<h2 id="database">Database</h2>
 The database name here is "tasks".
 There are two collections or tables by name "users" and "tasks".
 Users collection stores the credentials of all the users that signup for on this application. It also stores the labels.
