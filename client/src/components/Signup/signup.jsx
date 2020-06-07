@@ -22,9 +22,8 @@ class Signup extends React.Component {
         .then((res) => {
           console.log(res);
           if (res.data.status === 200) {
-            this.props.setUser(cred.name, res.data.id);
-            history.push('/home');
-            console.log("Login Successful");
+            history.push('/');
+            message.info("Please Login");
           }
           else 
             message.error("User with this name already exist !!!");
@@ -51,7 +50,7 @@ class Signup extends React.Component {
       <Row justify="space-around" align="middle" className="login-wrapper" justify="space-around" align="middle">
         <Col span={3}></Col>
         <Col className="login" span={6}>
-          <div className="title">TASK MANAGEMENT TODO APP</div>
+          <div className="title">TASK MANAGER</div>
           <Input size="large" value={this.state.name} onChange={this.handleChange} id="name" placeholder="Username" /><br /><br />
           <Input.Password size="large" value={this.state.pass} onChange={this.handleChange} id="pass" placeholder="Password" /><br /><br />
           <Input.Password size="large" value={this.state.confirmPass} onChange={this.handleChange} id="confirmPass" placeholder="Confirm Password" /><br /><br />

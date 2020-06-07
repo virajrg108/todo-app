@@ -43,7 +43,7 @@ class Login extends React.Component {
       <Row justify="space-around" align="middle" className="login-wrapper" justify="space-around" align="middle">
         <Col span={3}></Col>
         <Col className="login" span={6}>
-          <div className="title">TASK MANAGEMENT TODO APP</div>
+          <div className="title">TASK MANAGER</div>
           <Input size="large" value={this.state.name} onChange={this.handleChange} id="name" placeholder="Username" /><br /><br />
           <Input.Password size="large" value={this.state.pass} onChange={this.handleChange} id="pass" placeholder="Password" /><br /><br />
           <Button className="login-btn" size="large" onClick={this.handleClick} type="primary">LOGIN</Button>

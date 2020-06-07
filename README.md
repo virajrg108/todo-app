@@ -9,10 +9,32 @@
 This project is made with MERN (Mongo, Express, ReactJS, NodeJS) techstack.
 
 <img alt="MERN" width="300" style="text-align: center" src="https://codingthesmartway.com/wp-content/uploads/2019/01/mern_logo.png"/>
+<h2>Demo</h2>
+Link1: <a href=""></a>
+<h2>Setup</h2>
+This section is for you to setup this application on your computer system. If you want you can skip this section and move onto the <a href="#doc">documentation.</a><br/>
+<b>Prerequisites: </b> Node and NPM installled on your laptop.<br/>
+Paste the following commands in your terminal/command line.
+<pre>
+git clone https://github.com/VirajRG/todo-app.git
+cd server && npm install
+</pre>
+There are two folder in it. One is Client folder that contains the frontend react app and another is server folder contains backend NodeJS app.
+Make a .env file in the "server" directory and paste the following code in it.
+<pre>
+uri = &lt;CONNECTION_STRG&gt;
+</pre> 
+Replace &lt;CONNECTION_STRG&gt; with the connection string of your MongoDB Database.
+<br/>
+Create a database with name "tasks" and two collections with name "users" and "todos". Open terminal, cd into your the server directory and paste the following command in it.
+<pre>npm start</pre>
+Visit <a href="http://localhost:8080">http://localhost:8080</a>. Woho!! The app is up.<br/>
+The frontend is built for production using <b>npm run build</b> command and stored in the build directory of client folder.
+The NodeJS server serves the static build from this folder.<br/>
+As far database is concerned, it is hosted on MongoDB Atlas so that you don't have to 
 
-If you want to jump to the part where I have explained how to run this application on your system click <a href="setup">here</a>.
 
-<h2>This Documentiation is divided into three parts</h2>
+<h2 id="doc">This Documentiation is divided into three parts</h2>
 <ul>
     <li><a href="#frontend">Frontend</a></li>
     <li><a href="#backend">Backend</a></li>
@@ -65,3 +87,27 @@ Also observe that while dragging the todo the application creates a shadow eleme
 | /todos/edit | POST | Todo Object | <pre>Status: number</pre> |
 | /todos/delete | POST | <pre>{ _id: String }</pre> | <pre>Status: number</pre>|
 | /labels | POST | Array of labels | <pre>Status: number</pre>|
+
+<h2>Database</h2>
+The database name here is "tasks".
+There are two collections or tables by name "users" and "tasks".
+Users collection stores the credentials of all the users that signup for on this application. It also stores the labels.
+<pre>
+Users
+  |-->_id : ObjectID
+  |-->name : String
+  |-->pass : String
+  |-->labels : Array of Strings
+</pre>
+The todos collection stores the todos of each user. The structure is as follows:
+<pre>
+Todos
+  |-->_id : ObjectID
+  |-->user: String
+  |-->name : String
+  |-->desc : String
+  |-->dueDate : String
+  |-->priority : String
+  |-->status : String
+  |-->labels : Array of String
+</pre>

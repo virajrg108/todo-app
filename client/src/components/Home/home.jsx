@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { message, Layout, Menu, Icon, Button, Avatar, Breadcrumb, DatePicker } from 'antd';
+import { message, Layout, Popover, Avatar, Breadcrumb, DatePicker } from 'antd';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import { UserOutlined } from '@ant-design/icons';
 import history from '../../history';
@@ -20,22 +20,37 @@ class Home extends Component {
 			status: ['new', 'inprogress', 'completed'],
 			todos: []
 		}
+		this.sortTodos = this.sortTodos.bind(this);
 	}
 	componentDidMount() {
-		this.setState({labels: this.props.user.label})
+		this.setState({ labels: this.props.user.label })
 		setTimeout(() => {
 			const cred = { name: this.props.user.name };
 			axios
 				.post('/todo/get', cred)
 				.then((res) => {
 					if (res.data.status === 200) {
-						this.setState({ todos: res.data.todos });
+						console.log(res.data.todos);
+						var data = res.data.todos.filter(t => t.priority === 'high');
+						data.push.apply(data, res.data.todos.filter(t => t.priority === 'normal'))
+						data.push.apply(data, res.data.todos.filter(t => t.priority === 'low'))
+						console.log(data);
+						this.setState({ todos: data });
+						setTimeout(()=> {
+							console.log(this.state.todos);
+						}, 100);
 					}
 				})
 				.catch(err => {
 					console.error(err);
 				});
 		}, 50);
+	}
+	sortTodos = () => {
+		// this.setState({todos: data});
+		var data = this.state.todos.filter(t => t.priority === 'high');
+		data.push(this.state.todos.filter(t => t.priority === 'normal'))
+		this.setState({ todos: data });
 	}
 	handleAddTodo = (todo) => {
 		todo.user = this.props.user.name;
@@ -59,13 +74,13 @@ class Home extends Component {
 	}
 	handleDeleteTodo = (_id) => {
 		axios
-			.post('/todo/delete', {_id})
+			.post('/todo/delete', { _id })
 			.then((res) => {
 				if (res.data.status === 200) {
-					var data = this.state.todos.filter((t)=> {
-						return (t._id!=_id);
+					var data = this.state.todos.filter((t) => {
+						return (t._id != _id);
 					})
-					this.setState({ todos: data});
+					this.setState({ todos: data });
 				}
 			})
 			.catch(err => {
@@ -78,10 +93,24 @@ class Home extends Component {
 		}, 1000);
 	}
 	handleEditLabel = (labels) => {
-		this.setState({ labels });
-		setTimeout(() => {
-			console.log(this.state.labels);
-		}, 100);
+		axios
+			.post('/labels', { labels: labels, _id: this.props.user._id })
+			.then((res) => {
+				if (res.data.status === 200) {
+					this.setState({ labels });
+					this.props.editLabel(labels);
+					setTimeout(() => {
+						console.log(this.state.labels);
+					}, 100);
+				}
+				else
+					message.error('Label Operation Failed !!!');
+			})
+			.catch(err => {
+				console.error(err);
+				message.error('Label Operation failed');
+			});
+
 	}
 	handleEditTodo = (todo) => {
 		axios
@@ -104,7 +133,13 @@ class Home extends Component {
 				console.error(err);
 				message.error('Edit Operation failed');
 			});
-		
+
+	}
+	handleVisibleChange = popVisible => {
+		this.setState({ popVisible });
+	};
+	logout = () => {
+		history.push('/');
 	}
 	render() {
 		return (
@@ -112,7 +147,15 @@ class Home extends Component {
 				<Header className="header-wrapper" style={{ position: 'fixed', zIndex: 1, width: '100%' }}>
 					<div className="header">
 						<div className="title">TASK MANAGER</div>
-						<Avatar size="large" icon={<UserOutlined />} />
+						<Popover
+							content={<a onClick={this.logout}>Logout</a>}
+							title={this.props.user.name}
+							trigger="hover"
+							visible={this.state.popVisible}
+							onVisibleChange={this.handleVisibleChange}
+						>
+							<Avatar size="large" icon={<UserOutlined />} />
+						</Popover>
 					</div>
 				</Header>
 				<Content className="site-layout" style={{ padding: '0 50px', marginTop: 64 }}>

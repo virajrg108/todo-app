@@ -84,7 +84,6 @@ class Tasks extends React.Component {
 	}
 	handleFilter = () => {
 		var txt = this.state.searchTxt;
-		console.log(true && true && true);
 		var data = this.props.todos.filter((todo) => {
 			return this.searchFilter(todo.name) && this.dateFilter(todo.due) && this.labelFilter(todo.label) && this.statusFilter(todo.status);
 		})
@@ -198,9 +197,8 @@ class Tasks extends React.Component {
 								mode="multiple"
 								style={{ width: '55%' }}
 								placeholder="Please select label"
-								defaultValue={[]}
 								value={this.state.modalLabels}
-								onChange={(value) => this.handleSelect(value, 'modalLabels')}
+								onChange={(value) => this.handleEditSelect(value, 'modalLabels')}
 							>
 								{this.props.labels.map((l, key) => {
 									return <Option key={l}>{l}</Option>
@@ -217,14 +215,14 @@ class Tasks extends React.Component {
 						{this.state.todos.map((todo) => {
 							return <div key={todo._id} onClick={() => this.showEditModal(todo)} className="card" style={todo.priority == 'high' ? { borderTop: '5px solid #cf1322' } : todo.priority == 'normal' ? { borderTop: '5px solid #006d75' } : { borderTop: '5px solid #5b8c00' }} title={todo.name}>
 								<div className="card-row">
-									<div className="card-title">{todo.name}</div>
+									<div className="card-title">{todo.name.length>30?todo.name.slice(0,27).concat('...	'):todo.name}</div>
 									<div className="card-badge">
 										<Tag color={todo.priority == 'high' ? 'red' : todo.priority == 'normal' ? 'blue' : 'green'}>{todo.priority}</Tag>
 										<Tag>{todo.status}</Tag>
 									</div>
 								</div>
 								<div className="card-row">
-									<div className="card-desc">{todo.desc}</div>
+									<div className="card-desc">{todo.desc.length>40?todo.desc.slice(0,37).concat('...'):todo.desc}</div>
 									<div className="card-badge">
 										{todo.label.map(function (l, key) {
 											return <Tag key={key}>{l}</Tag>

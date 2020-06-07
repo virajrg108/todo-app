@@ -14,6 +14,9 @@ const mapDispatchToProps = (dispatch, getState) => {
   return {
     getUser: () => {
       console.log(store.getState())
+    },
+    editLabel: (label) => {
+      dispatch({type:'SET_LABEL', label})
     }
   }
 }

@@ -79,7 +79,7 @@ class DynamicFieldSet extends React.Component {
                     <PlusOutlined /> Add field
                 </Button>
                   <Button id="loadBtn"  style={{display: 'none'}} onClick={() => {
-                    ['personal', 'work'].forEach(l => {
+                    this.props.labels.forEach(l => {
                       add(l);
                     });
                   }}>Load</Button>

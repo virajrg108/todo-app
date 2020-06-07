@@ -28,11 +28,9 @@ client.connect((err, db) => {
 
 	//Authentication
 	app.post('/auth/:type', cors(), function (req, res) {
-		console.log(req.params.type, req.body);
 		if (req.params.type == "login")
 			authen.find(req.body).toArray(function (err, results) {
-				console.log(results[0])
-				if (!err) {
+				if (!err && results.length!=0) {
 					res.json({ status: 200, _id: results[0]._id, label: results[0].label });
 				}
 				else
@@ -41,10 +39,10 @@ client.connect((err, db) => {
 		else
 			authen.find({ name: req.body.name }).toArray(function (err, results) {
 				if (!err && results.length == 0) {
-					authen.insertOne(req.body, function (err, ress) {
+					authen.insertOne({name:req.body.name, pass: req.body.pass, label:['personal', 'work', 'casual']}, function (err, ress) {
+						console.log(ress, err)
 						if (err) res.json({ status: 500 });
-						res.json({ status: 200, _id: ress.ops[0]._id, label: results[0].label })
-						console.log(ress.ops[0]._id);
+						else res.json({ status: 200, _id: ress.ops[0]._id, label: ress.ops[0].label })
 					});
 				}
 				else
@@ -72,16 +70,13 @@ client.connect((err, db) => {
 			});
 		}
 		else if (req.params.type == 'edit') {
-			console.log(req.body);
 			todos.updateOne({ _id: ObjectID(req.body._id) }, { $set: { name: req.body.name, desc: req.body.desc, due: req.body.due, status: req.body.status, priority: req.body.priority, label: req.body.label } }, function (err, results) {
-				console.log(results);
 				if (err) res.json({ status: 500 });
 				else
 					res.json({ status: 200 })
 			});
 		}
 		else if (req.params.type == 'delete') {
-			console.log(req.body);
 			todos.deleteOne({ _id: ObjectID(req.body._id) }, function (err, results) {
 				if (!err && results.deleteCount != 0) {
 					res.json({ status: 200 });
@@ -91,6 +86,15 @@ client.connect((err, db) => {
 			});
 		}
 
+	});
+
+	//Labels
+	app.post('/labels', function (req, res) {
+		authen.updateOne({ _id: ObjectID(req.body._id) }, { $set: { label: req.body.labels } }, function (err, results) {
+			if (!err && results.modifiedCount==1) res.json({ status: 200 });
+			else
+				res.json({ status: 500 })
+		});
 	});
 });
 

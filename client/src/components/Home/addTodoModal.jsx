@@ -1,27 +1,29 @@
 import React from 'react';
 import { Modal, Button, Input, DatePicker, Select } from 'antd';
+import moment from 'moment';
+
 const { Option } = Select;
 class AddTodoModal extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { visible: false, name: '', desc: '', date: '', status: 'new', priority: '', labels:[] };
+    this.state = { visible: false, name: '', desc: '', date: null, status: undefined, priority: undefined, labels:[] };
   }
   showModal = () => {
     this.setState({ visible: true });
   }
   handleOk = e => {
-    this.props.handleAddTodo({name: this.state.name, desc:this.state.desc, status:this.state.status, priority:this.state.priority, label: this.state.labels, due: this.state.date});
+    this.props.handleAddTodo({name: this.state.name, desc:this.state.desc, status:this.state.status, priority:this.state.priority, label: this.state.labels, due: moment(this.state.date).format('YYYY-MM-DD')});
     this.setState({
-      visible: false, name: '', desc: '', status: 'new', priority: 'normal', date:''
+      visible: false, name: '', desc: '', status: undefined, priority: undefined, date:undefined, labels: []
     });
   };
   handleCancel = e => {
     this.setState({
-      visible: false, name: '', desc: '', status: 'new', priority: 'normal' 
+      visible: false, name: '', desc: '', status: undefined, priority: undefined 
     });
   };
   handleDate = (date, dateString) => {
-    this.setState({ date: dateString });
+    this.setState({ date: date });
   }
   handleSelect = (value, type) => {
     this.setState({ [type]: value });
@@ -32,7 +34,7 @@ class AddTodoModal extends React.Component {
   }
   render() {
     return (
-      <div className="add-todo-wrapper">
+      <div className="add-todo-wra￼pper">
         <Button size="large" type="primary" onClick={this.showModal}>Add Todo</Button>
         <Modal
           title="Add Todo"
@@ -43,8 +45,8 @@ class AddTodoModal extends React.Component {
           <Input name="name" onChange={this.handleChange} value={this.state.name} placeholder="Name" /><br /><br />
           <Input.TextArea name="desc" onChange={this.handleChange} value={this.state.desc} placeholder="Description" /><br /><br />
           <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-            <DatePicker name="date" style={{ width: '45%' }} onChange={this.handleDate} />
-            <Select style={{ width: '45%' }} onChange={(value) => this.handleSelect(value, 'status')} placeholder="Select Status">
+            <DatePicker value={this.state.date} name="date" style={{ width: '45%' }} onChange={this.handleDate} placeholder="Select due date" />
+            <Select value={this.state.status} style={{ width: '45%' }} onChange={(value) => this.handleSelect(value, 'status')} placeholder="Select Status">
               <Option value="new">New</Option>
               <Option value="inprogress">In Progress</Option>
               <Option value="completed">Completed</Option>
@@ -52,16 +54,16 @@ class AddTodoModal extends React.Component {
           </div>
           <br />
           <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-            <Select style={{ width: '35%' }} onChange={(value) => this.handleSelect(value, 'priority')}  placeholder="Select Priority">
+            <Select value={this.state.priority} style={{ width: '35%' }} onChange={(value) => this.handleSelect(value, 'priority')}  placeholder="Select Priority">
               <Option value="high">High</Option>
               <Option value="normal">Normal</Option>
               <Option value="low">Low</Option>
             </Select>
             <Select
+            value={this.state.labels}
               mode="multiple"
               style={{ width: '55%' }}
               placeholder="Please select label"
-              defaultValue={[]}
               value={this.state.labels}
               onChange={(value) => this.handleSelect(value, 'labels')}
             >
